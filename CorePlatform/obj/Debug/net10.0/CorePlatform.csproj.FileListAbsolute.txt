@@ -121,3 +121,4 @@
 /Users/macbookairm3/Desktop/FON/diplomski/Project/CorePlatform/obj/Debug/net10.0/CorePlatform.genruntimeconfig.cache
 /Users/macbookairm3/Desktop/FON/diplomski/Project/CorePlatform/obj/Debug/net10.0/ref/CorePlatform.dll
 /Users/macbookairm3/Desktop/FON/diplomski/Project/CorePlatform/bin/Debug/net10.0/Scalar.AspNetCore.dll
+/Users/macbookairm3/Desktop/FON/diplomski/Project/CorePlatform/obj/Debug/net10.0/CorePlatform.sourcelink.json

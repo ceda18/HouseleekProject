@@ -1,4 +1,5 @@
 using CorePlatform.src.Data;
+using CorePlatform.src.DTOs;
 using CorePlatform.src.Models;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
@@ -46,36 +47,60 @@ app.MapGet("/weatherforecast", () =>
 })
 .WithName("GetWeatherForecast");
 
-// CorePlatform - može JOIN sa User
-app.MapGet("/test/core/workflows-with-user", async (AppDbContext db) =>
+// TEST
+// ActionDefinition
+app.MapGet("/action-definitions", async (AppDbContext db) =>
 {
-    var result = await db.SmartWorkflows
-        .Include(sw => sw.User)
-        .Select(sw => new {
-            sw.SmartWorkflowId,
-            sw.Name,
-            sw.Type,
-            UserName = sw.User.Name,
-            UserSurname = sw.User.Surname
-        })
-        .ToListAsync();
-    return Results.Ok(result);
+    var result = await db.ActionDefinitions.ToListAsync();
+    return Results.Ok(result.Select(ad => new ActionDefinitionResponse(ad)));
 })
 .WithOpenApi();
 
-// Agent - vidi workflows ali bez User podataka
-app.MapGet("/test/agent/workflows-without-user", async (AgentDbContext db) =>
+// ActionLog - Include za ItemState -> ActionDefinition zbog ValueType parsiranja
+app.MapGet("/action-logs", async (AppDbContext db) =>
 {
-    var result = await db.SmartWorkflows
-        .Select(sw => new {
-            sw.SmartWorkflowId,
-            sw.Name,
-            sw.Type,
-            UserName = sw.User.Name,
-            UserSurname = sw.User.Surname // samo ID, ime/prezime nije dostupno
-        })
+    var result = await db.ActionLogs
+        .Include(al => al.ItemState)
+            .ThenInclude(is_ => is_.ActionDefinition)
         .ToListAsync();
-    return Results.Ok(result);
+    return Results.Ok(result.Select(al => new ActionLogResponse(al)));
+})
+.WithOpenApi();
+
+// AutomationTrigger
+app.MapGet("/automation-triggers", async (AppDbContext db) =>
+{
+    var result = await db.AutomationTriggers.ToListAsync();
+    return Results.Ok(result.Select(at => new AutomationTriggerResponse(at)));
+})
+.WithOpenApi();
+
+// ItemState - Include za ActionDefinition zbog ValueType parsiranja
+app.MapGet("/item-states", async (AppDbContext db) =>
+{
+    var result = await db.ItemStates
+        .Include(is_ => is_.ActionDefinition)
+        .ToListAsync();
+    return Results.Ok(result.Select(is_ => new ItemStateResponse(is_)));
+})
+.WithOpenApi();
+
+// SmartAction - Include za ItemState -> ActionDefinition zbog ValueType parsiranja
+app.MapGet("/smart-actions", async (AppDbContext db) =>
+{
+    var result = await db.SmartActions
+        .Include(sa => sa.ItemState)
+            .ThenInclude(is_ => is_.ActionDefinition)
+        .ToListAsync();
+    return Results.Ok(result.Select(sa => new SmartActionResponse(sa)));
+})
+.WithOpenApi();
+
+// AbstractUser
+app.MapGet("/abstract-users", async (AppDbContext db) =>
+{
+    var result = await db.AbstractUsers.ToListAsync();
+    return Results.Ok(result.Select(au => new AbstractUserResponse(au)));
 })
 .WithOpenApi();
 
