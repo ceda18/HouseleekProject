@@ -3,7 +3,7 @@ using System;
 using CorePlatform.src.Utility;
 
 namespace CorePlatform.src.DTOs;
-public class AbstractUserResponse
+public class AbstractUserDto
 {
     public int UserId { get; set; }
 
@@ -17,15 +17,24 @@ public class AbstractUserResponse
 
     //public virtual Vendor? Vendor { get; set; }
     
-    
-    public AbstractUserResponse(AbstractUser abstractUser)
+
+    public AbstractUserDto Response(AbstractUser abstractUser)
     {
         UserId = abstractUser.UserId;
         Email = Encryptor.HashString(abstractUser.Email);
         Password = Encryptor.HashString(abstractUser.Password);
-        //Admin = abstractUser.Admin;
-        //User = abstractUser.User;
-        //Vendor = abstractUser.Vendor;
+        return this;
+    }
+
+    public AbstractUser Request()
+    {
+        AbstractUser abstractUser = new AbstractUser();
+
+        abstractUser.UserId = this.UserId;
+        abstractUser.Email = this.Email;
+        abstractUser.Password = this.Password;
+
+        return abstractUser;
     }
 
 }

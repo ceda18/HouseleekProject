@@ -32,6 +32,11 @@ def insert(table, cols, rows):
 
 sql("SET search_path TO houseleek;")
 sql("TRUNCATE TABLE action_log, automation_trigger, smart_action, automation, scene, smart_workflow, item_state, item, action_definition, item_property, item_model, unit, room, abstract_user, unit_type, room_type, item_category RESTART IDENTITY CASCADE;")
+sql("GRANT USAGE ON SCHEMA houseleek TO thesis_agent;")
+sql("GRANT SELECT ON ALL TABLES IN SCHEMA houseleek TO thesis_agent;")
+sql("REVOKE SELECT ON houseleek.abstract_user FROM thesis_agent;")
+sql("REVOKE SELECT ON houseleek.admin FROM thesis_agent;")
+sql('REVOKE SELECT ON houseleek."user" FROM thesis_agent;')
 nl()
 
 # ─────────────────────────────────────────────

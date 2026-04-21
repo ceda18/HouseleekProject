@@ -1,6 +1,7 @@
 using CorePlatform.src.Data;
 using CorePlatform.src.DTOs;
 using CorePlatform.src.Models;
+using CorePlatform.src.Services;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 
@@ -10,11 +11,22 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddOpenApi();
 
+// Database
+
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("CorePlatform")));
 
 builder.Services.AddDbContext<AgentDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("Agent")));
+
+// Controllers
+builder.Services.AddControllers();
+
+// Services
+
+builder.Services.AddScoped<IRoomService, RoomService>();
+builder.Services.AddScoped<IItemService, ItemService>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 // App
 
@@ -27,6 +39,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.MapControllers();
 
 var summaries = new[]
 {
@@ -47,62 +60,7 @@ app.MapGet("/weatherforecast", () =>
 })
 .WithName("GetWeatherForecast");
 
-// TEST
-// ActionDefinition
-app.MapGet("/action-definitions", async (AppDbContext db) =>
-{
-    var result = await db.ActionDefinitions.ToListAsync();
-    return Results.Ok(result.Select(ad => new ActionDefinitionResponse(ad)));
-})
-.WithOpenApi();
-
-// ActionLog - Include za ItemState -> ActionDefinition zbog ValueType parsiranja
-app.MapGet("/action-logs", async (AppDbContext db) =>
-{
-    var result = await db.ActionLogs
-        .Include(al => al.ItemState)
-            .ThenInclude(is_ => is_.ActionDefinition)
-        .ToListAsync();
-    return Results.Ok(result.Select(al => new ActionLogResponse(al)));
-})
-.WithOpenApi();
-
-// AutomationTrigger
-app.MapGet("/automation-triggers", async (AppDbContext db) =>
-{
-    var result = await db.AutomationTriggers.ToListAsync();
-    return Results.Ok(result.Select(at => new AutomationTriggerResponse(at)));
-})
-.WithOpenApi();
-
-// ItemState - Include za ActionDefinition zbog ValueType parsiranja
-app.MapGet("/item-states", async (AppDbContext db) =>
-{
-    var result = await db.ItemStates
-        .Include(is_ => is_.ActionDefinition)
-        .ToListAsync();
-    return Results.Ok(result.Select(is_ => new ItemStateResponse(is_)));
-})
-.WithOpenApi();
-
-// SmartAction - Include za ItemState -> ActionDefinition zbog ValueType parsiranja
-app.MapGet("/smart-actions", async (AppDbContext db) =>
-{
-    var result = await db.SmartActions
-        .Include(sa => sa.ItemState)
-            .ThenInclude(is_ => is_.ActionDefinition)
-        .ToListAsync();
-    return Results.Ok(result.Select(sa => new SmartActionResponse(sa)));
-})
-.WithOpenApi();
-
-// AbstractUser
-app.MapGet("/abstract-users", async (AppDbContext db) =>
-{
-    var result = await db.AbstractUsers.ToListAsync();
-    return Results.Ok(result.Select(au => new AbstractUserResponse(au)));
-})
-.WithOpenApi();
+//////
 
 app.Run();
 

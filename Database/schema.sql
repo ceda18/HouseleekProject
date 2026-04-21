@@ -191,7 +191,7 @@ CREATE TABLE item_state (
     CONSTRAINT fk_item_state_item           FOREIGN KEY (item_id)
         REFERENCES item (item_id)
         ON UPDATE RESTRICT
-        ON DELETE RESTRICT
+        ON DELETE CASCADE
 );
 
 -- ============================================================
@@ -307,3 +307,15 @@ CREATE TABLE action_log (
         ON UPDATE CASCADE
         ON DELETE SET NULL
 );
+
+-- ============================================================
+-- AGENT ROLE GRANTS
+-- ============================================================
+
+-- davanju agenta read-only pristup
+GRANT USAGE ON SCHEMA houseleek TO thesis_agent;
+GRANT SELECT ON ALL TABLES IN SCHEMA houseleek TO thesis_agent;
+-- suspenzija agenta sa tabela sa privatnim informacijama
+REVOKE SELECT ON houseleek.abstract_user FROM thesis_agent;
+REVOKE SELECT ON houseleek.admin FROM thesis_agent;
+REVOKE SELECT ON houseleek."user" FROM thesis_agent;
