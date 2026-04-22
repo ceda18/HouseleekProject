@@ -8,4 +8,5 @@ public interface IUserService
     Task<UserDto?> GetUser(int id);
     Task<UserDto> PostUser(UserDto request);
     Task<bool> PutUser(UserDto request);
+    
 }

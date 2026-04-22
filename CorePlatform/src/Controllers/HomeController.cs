@@ -8,13 +8,44 @@ namespace CorePlatform.src.Controllers;
 [ApiController]
 public class HomeController : ControllerBase
 {
-    private readonly IRoomService _roomService;
-    private readonly IItemService _itemService;
 
-    public HomeController(IRoomService roomService, IItemService itemService)
+    private readonly IItemService _itemService;
+    private readonly IRoomService _roomService;
+    private readonly IUnitService _unitService;
+
+    public HomeController(IItemService itemService, IRoomService roomService, IUnitService unitService)
     {
-        _roomService = roomService;
+
         _itemService = itemService;
+        _roomService = roomService;
+        _unitService = unitService;
+    }
+
+    // Item
+
+    [HttpGet("items")]
+    public async Task<ActionResult<List<ItemDto>>> GetItems()
+        => Ok(await _itemService.GetItems());
+
+    [HttpGet("items/{id}")]
+    public async Task<ActionResult<ItemDto>> GetItem(int id)
+    {
+        var item = await _itemService.GetItem(id);
+        return item == null ? NotFound() : Ok(item);
+    }
+
+    [HttpPost("items")]
+    public async Task<ActionResult<ItemDto>> PostItem(ItemDto request)
+    {
+        var item = await _itemService.PostItem(request);
+        return CreatedAtAction(nameof(GetItem), new { id = item.ItemId }, item);
+    }
+
+    [HttpDelete("items/{id}")]
+    public async Task<ActionResult> DeleteItem(int id)
+    {
+        var result = await _itemService.DeleteItem(id);
+        return result ? Ok() : NotFound();
     }
 
     // Room
@@ -51,30 +82,37 @@ public class HomeController : ControllerBase
         return result ? Ok() : NotFound();
     }
 
-    // Item
+    // Unit
 
-    [HttpGet("items")]
-    public async Task<ActionResult<List<ItemDto>>> GetItems()
-        => Ok(await _itemService.GetItems());
+    [HttpGet("units")]
+    public async Task<ActionResult<List<UnitDto>>> GetUnits()
+        => Ok(await _unitService.GetUnits());
 
-    [HttpGet("items/{id}")]
-    public async Task<ActionResult<ItemDto>> GetItem(int id)
+    [HttpGet("units/{id}")]
+    public async Task<ActionResult<UnitDto>> GetUnit(int id)
     {
-        var item = await _itemService.GetItem(id);
-        return item == null ? NotFound() : Ok(item);
+        var unit = await _unitService.GetUnit(id);
+        return unit == null ? NotFound() : Ok(unit);
     }
 
-    [HttpPost("items")]
-    public async Task<ActionResult<ItemDto>> PostItem(ItemDto request)
+    [HttpPost("units")]
+    public async Task<ActionResult<UnitDto>> PostUnit(UnitDto request)
     {
-        var item = await _itemService.PostItem(request);
-        return CreatedAtAction(nameof(GetItem), new { id = item.ItemId }, item);
+        var unit = await _unitService.PostUnit(request);
+        return CreatedAtAction(nameof(GetUnit), new { id = unit.UnitId }, unit);
     }
 
-    [HttpDelete("items/{id}")]
-    public async Task<ActionResult> DeleteItem(int id)
+    [HttpPut("units")]
+    public async Task<ActionResult> PutUnit(UnitDto request)
     {
-        var result = await _itemService.DeleteItem(id);
+        var result = await _unitService.PutUnit(request);
+        return result ? Ok() : NotFound();
+    }
+
+    [HttpDelete("units/{id}")]
+    public async Task<ActionResult> DeleteUnit(int id)
+    {
+        var result = await _unitService.DeleteUnit(id);
         return result ? Ok() : NotFound();
     }
 

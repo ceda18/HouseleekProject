@@ -19,7 +19,7 @@ public class UserService : IUserService
         var users = await _db.Users
             .Include(u => u.UserNavigation)
             .ToListAsync();
-        return users.Select(u => new UserDto().Response(u)).ToList();
+        return users.Select(u => MapResponse(u)).ToList();
     }
 
     public async Task<UserDto?> GetUser(int id)
@@ -27,24 +27,54 @@ public class UserService : IUserService
         var user = await _db.Users
             .Include(u => u.UserNavigation)
             .FirstOrDefaultAsync(u => u.UserId == id);
-        return user == null ? null : new UserDto().Response(user);
+        return user == null ? null : MapResponse(user);
     }
 
     public async Task<UserDto> PostUser(UserDto request)
     {
-        var user = request.Request();
+        var user = MapRequest(request);
         _db.Users.Add(user);
         await _db.SaveChangesAsync();
 
-        return new UserDto().Response(user);
+        return MapResponse(user);
     }
 
     public async Task<bool> PutUser(UserDto request)
     {
-        var user = request.Request();
+        var user = MapRequest(request);
         _db.Users.Update(user);
         var affected = await _db.SaveChangesAsync();
         return affected > 0;
+    }
+
+    ////////////////////////////
+    // MAPPING METHODS
+    ///////////////////////////
+
+    public UserDto MapResponse(User user)
+    {
+        UserDto response = new UserDto();
+        response.UserId = user.UserId;
+        response.Name = user.Name;
+        response.Surname = user.Surname;
+        response.Email = Encryptor.HashString(user.UserNavigation.Email);
+        response.Password = Encryptor.HashString(user.UserNavigation.Password);
+        return response;
+    }
+
+    public User MapRequest(UserDto request)
+    {
+        User user = new User();
+        user.UserId = request.UserId;
+        user.Name = request.Name;
+        user.Surname = request.Surname;
+        user.UserNavigation = new AbstractUser
+        {
+            UserId = request.UserId,
+            Email = request.Email,
+            Password = request.Password
+        };
+        return user;
     }
 
 }

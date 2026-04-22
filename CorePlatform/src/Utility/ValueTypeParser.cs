@@ -1,7 +1,13 @@
 namespace CorePlatform.src.Utility;
 public class ValueTypeParser
 {
-    public static object ParseValue(string value, string valueType)
+    public static object TryParseValue(string value, string valueType)
+    {
+        try { return ParseValue(value, valueType); }
+        catch { return value; }
+    }
+
+    private static object ParseValue(string value, string valueType)
     {
         switch (valueType.ToLowerInvariant())
         {
