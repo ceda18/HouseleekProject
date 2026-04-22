@@ -51,6 +51,8 @@ builder.Services.AddScoped<IItemModelService, ItemModelService>();
 // Smart Workflow Management
 builder.Services.AddScoped<ISceneService, SceneService>();
 builder.Services.AddScoped<IAutomationService, AutomationService>();
+// Action Management
+builder.Services.AddScoped<IActionService, ActionService>();
 
 
 // APP BUILDING

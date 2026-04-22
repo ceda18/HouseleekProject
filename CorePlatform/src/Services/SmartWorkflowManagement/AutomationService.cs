@@ -114,23 +114,23 @@ public class AutomationService : IAutomationService
         => _db.Automations
             .Include(a => a.AutomationNavigation)
                 .ThenInclude(b => b.SmartActions)
-                    .ThenInclude(c => c.ItemState)
+                    .ThenInclude(c => c.ItemState!) // nullable for TargetScene actions
                         .ThenInclude(d => d.ActionDefinition)
             .Include(a => a.AutomationNavigation)
                 .ThenInclude(b => b.SmartActions)
-                    .ThenInclude(c => c.ItemState)
+                    .ThenInclude(c => c.ItemState!) // nullable for TargetScene actions
                         .ThenInclude(d => d.Item)
                             .ThenInclude(e => e.ItemModel)
                                 .ThenInclude(f => f.ItemCategory)
             .Include(a => a.AutomationNavigation)
                 .ThenInclude(b => b.SmartActions)
-                    .ThenInclude(c => c.TargetScene)
+                    .ThenInclude(c => c.TargetScene!) // nullable for ItemState actions
                         .ThenInclude(d => d.SceneNavigation)
             .Include(a => a.AutomationTriggers)
-                .ThenInclude(b => b.ItemState)
+                .ThenInclude(b => b.ItemState!) // nullable for non-ItemState triggers
                     .ThenInclude(c => c.ActionDefinition)
             .Include(a => a.AutomationTriggers)
-                .ThenInclude(b => b.ItemState)
+                .ThenInclude(b => b.ItemState!) // nullable for non-ItemState triggers
                     .ThenInclude(c => c.Item)
                         .ThenInclude(d => d.ItemModel)
                             .ThenInclude(e => e.ItemCategory);
@@ -189,7 +189,7 @@ public class AutomationService : IAutomationService
         {
             if (t.ItemStateId != null)
             {
-                var itemState = await _db.ItemStates.FindAsync(t.ItemStateId);
+                var itemState = await _db.ItemStates.FirstOrDefaultAsync(a => a.ItemStateId == t.ItemStateId);
                 if (itemState == null)
                     throw new ArgumentException($"ItemState {t.ItemStateId} not found.");
             }
