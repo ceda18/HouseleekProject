@@ -57,8 +57,8 @@ public class UserService : IUserService
         response.UserId = user.UserId;
         response.Name = user.Name;
         response.Surname = user.Surname;
-        response.Email = Encryptor.HashString(user.UserNavigation.Email);
-        response.Password = Encryptor.HashString(user.UserNavigation.Password);
+        response.Email = user.UserNavigation.Email;
+        //response.Password = Encryptor.HashString(user.UserNavigation.Password);
         return response;
     }
 
@@ -72,7 +72,7 @@ public class UserService : IUserService
         {
             UserId = request.UserId,
             Email = request.Email,
-            Password = request.Password
+            Password = Encryptor.HashString(request.Password!)
         };
         return user;
     }

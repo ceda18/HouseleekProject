@@ -9,6 +9,6 @@ public class UserDto
 
     // AbstractUser properties
     public string Email { get; set; } = null!;
-    public string Password { get; set; } = null!;
+    public string? Password { get; set; } = null!;
 
 }
