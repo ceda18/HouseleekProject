@@ -9,33 +9,42 @@ namespace CorePlatform.src.Services;
 public class AutomationService : IAutomationService
 {
     private readonly AppDbContext _db;
+    private readonly ICurrentUser _currentUser;
 
-    public AutomationService(AppDbContext db)
+    public AutomationService(AppDbContext db, ICurrentUser currentUser)
     {
         _db = db;
+        _currentUser = currentUser;
     }
 
     // ─── PUBLIC METHODS ──────────────────────────────────────────────────────
 
     public async Task<List<AutomationDto>> GetAutomations()
     {
-        var automations = await QueryWithIncludes().ToListAsync();
-        return automations.Select(a => MapResponse(a)).ToList();
+        var query = QueryWithIncludes();
+        if (_currentUser.Role != "admin")
+            query = query.Where(a => a.AutomationNavigation.UserId == _currentUser.UserId);
+        var automations = await query.ToListAsync();
+        return automations.Select(MapResponse).ToList();
     }
 
     public async Task<List<AutomationDto>> GetAutomations(int itemId)
     {
-        var automations = await QueryWithIncludes()
+        var query = QueryWithIncludes()
             .Where(a => a.AutomationNavigation.SmartActions
-                .Any(b => b.ItemState != null && b.ItemState.ItemId == itemId))
-            .ToListAsync();
-        return automations.Select(a => MapResponse(a)).ToList();
+                .Any(b => b.ItemState != null && b.ItemState.ItemId == itemId));
+        if (_currentUser.Role != "admin")
+            query = query.Where(a => a.AutomationNavigation.UserId == _currentUser.UserId);
+        var automations = await query.ToListAsync();
+        return automations.Select(MapResponse).ToList();
     }
 
     public async Task<AutomationDto?> GetAutomation(int id)
     {
-        var automation = await QueryWithIncludes()
-            .FirstOrDefaultAsync(a => a.AutomationId == id);
+        var query = QueryWithIncludes().Where(a => a.AutomationId == id);
+        if (_currentUser.Role != "admin")
+            query = query.Where(a => a.AutomationNavigation.UserId == _currentUser.UserId);
+        var automation = await query.FirstOrDefaultAsync();
         return automation == null ? null : MapResponse(automation);
     }
 
@@ -45,7 +54,7 @@ public class AutomationService : IAutomationService
         {
             Name = request.Name,
             Type = "automation",
-            UserId = request.UserId
+            UserId = _currentUser.UserId // Ensure ownership from token, not client input
         };
         _db.SmartWorkflows.Add(smartWorkflow);
         await _db.SaveChangesAsync();
@@ -73,6 +82,7 @@ public class AutomationService : IAutomationService
             .Include(a => a.AutomationTriggers)
             .FirstOrDefaultAsync(a => a.AutomationId == request.AutomationId);
         if (automation == null) return false;
+        if (_currentUser.Role != "admin" && automation.AutomationNavigation.UserId != _currentUser.UserId) return false;
 
         automation.AutomationNavigation.Name = request.Name;
 
@@ -98,6 +108,7 @@ public class AutomationService : IAutomationService
             .Include(a => a.AutomationTriggers)
             .FirstOrDefaultAsync(a => a.AutomationId == id);
         if (automation == null) return false;
+        if (_currentUser.Role != "admin" && automation.AutomationNavigation.UserId != _currentUser.UserId) return false;
 
         _db.SmartActions.RemoveRange(automation.AutomationNavigation.SmartActions);
         _db.AutomationTriggers.RemoveRange(automation.AutomationTriggers);

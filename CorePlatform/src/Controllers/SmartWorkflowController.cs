@@ -1,11 +1,13 @@
 using CorePlatform.src.Services;
 using Microsoft.AspNetCore.Mvc;
 using CorePlatform.src.DTOs;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CorePlatform.src.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize] // Ensure all endpoints require authentication
 public class SmartWorkflowController : ControllerBase
 {
     private readonly ISceneService _sceneService;

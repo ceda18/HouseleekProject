@@ -10,33 +10,42 @@ namespace CorePlatform.src.Services;
 public class SceneService : ISceneService
 {
     private readonly AppDbContext _db;
+    private readonly ICurrentUser _currentUser;
 
-    public SceneService(AppDbContext db)
+    public SceneService(AppDbContext db, ICurrentUser currentUser)
     {
         _db = db;
+        _currentUser = currentUser;
     }
     
     // ─── PUBLIC METHODS ──────────────────────────────────────────────────────
 
     public async Task<List<SceneDto>> GetScenes()
     {
-        var scenes = await QueryWithIncludes().ToListAsync();
+        var query = QueryWithIncludes();
+        if (_currentUser.Role != "admin")
+            query = query.Where(a => a.SceneNavigation.UserId == _currentUser.UserId);
+        var scenes = await query.ToListAsync();
         return scenes.Select(a => MapResponse(a)).ToList();
     }
 
     public async Task<List<SceneDto>> GetScenes(int itemId)
     {
-        var scenes = await QueryWithIncludes()
+        var query = QueryWithIncludes()
             .Where(a => a.SceneNavigation.SmartActions
-                .Any(b => b.ItemState != null && b.ItemState.ItemId == itemId))
-            .ToListAsync();
+                .Any(b => b.ItemState != null && b.ItemState.ItemId == itemId));
+        if (_currentUser.Role != "admin")
+            query = query.Where(a => a.SceneNavigation.UserId == _currentUser.UserId);
+        var scenes = await query.ToListAsync();
         return scenes.Select(a => MapResponse(a)).ToList();
     }
 
     public async Task<SceneDto?> GetScene(int id)
     {
-        var scene = await QueryWithIncludes()
-            .FirstOrDefaultAsync(a => a.SceneId == id);
+        var query = QueryWithIncludes().Where(a => a.SceneId == id);
+        if (_currentUser.Role != "admin")
+            query = query.Where(a => a.SceneNavigation.UserId == _currentUser.UserId);
+        var scene = await query.FirstOrDefaultAsync();
         return scene == null ? null : MapResponse(scene);
     }
 
@@ -46,7 +55,7 @@ public class SceneService : ISceneService
         {
             Name = request.Name,
             Type = "scene",
-            UserId = request.UserId
+            UserId = _currentUser.UserId // Ensure ownership from token, not client input
         };
         _db.SmartWorkflows.Add(smartWorkflow);
         await _db.SaveChangesAsync();
@@ -69,6 +78,7 @@ public class SceneService : ISceneService
                 .ThenInclude(b => b.SmartActions)
             .FirstOrDefaultAsync(a => a.SceneId == request.SceneId);
         if (scene == null) return false;
+        if (_currentUser.Role != "admin" && scene.SceneNavigation.UserId != _currentUser.UserId) return false;
 
         scene.SceneNavigation.Name = request.Name;
         _db.SmartActions.RemoveRange(scene.SceneNavigation.SmartActions);
@@ -87,6 +97,7 @@ public class SceneService : ISceneService
                 .ThenInclude(b => b.SmartActions)
             .FirstOrDefaultAsync(a => a.SceneId == id);
         if (scene == null) return false;
+        if (_currentUser.Role != "admin" && scene.SceneNavigation.UserId != _currentUser.UserId) return false;
         _db.SmartActions.RemoveRange(scene.SceneNavigation.SmartActions);
         await _db.SaveChangesAsync();
         _db.SmartWorkflows.Remove(scene.SceneNavigation);

@@ -62,6 +62,8 @@ builder.Services.AddControllers();
 // SERVICES
 // Authentification
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<ICurrentUser, CurrentUser>();
 // User Management
 builder.Services.AddScoped<IUserService, UserService>();
 // Home Management

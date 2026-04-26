@@ -1,11 +1,13 @@
 using CorePlatform.src.DTOs;
 using CorePlatform.src.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CorePlatform.src.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize] // Ensure all endpoints require authentication
 public class HomeController : ControllerBase
 {
 

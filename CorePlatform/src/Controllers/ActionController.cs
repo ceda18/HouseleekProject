@@ -1,11 +1,12 @@
 using CorePlatform.src.DTOs;
 using CorePlatform.src.Services;
 using Microsoft.AspNetCore.Mvc;
-
+using Microsoft.AspNetCore.Authorization;
 namespace CorePlatform.src.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize] // Ensure all endpoints require authentication
 public class ActionController : ControllerBase
 {
     private readonly IActionService _actionService;

@@ -10,10 +10,12 @@ namespace CorePlatform.src.Services;
 public class ActionService : IActionService
 {
     private readonly AppDbContext _db;
+    private readonly ICurrentUser _currentUser;
 
-    public ActionService(AppDbContext db)
+    public ActionService(AppDbContext db, ICurrentUser currentUser)
     {
         _db = db;
+        _currentUser = currentUser;
     }
 
     // ─── PUBLIC METHODS ──────────────────────────────────────────────────────
@@ -32,6 +34,7 @@ public class ActionService : IActionService
             .FirstOrDefaultAsync(i => i.ItemId == request.ItemId);
 
         if (item == null) return false;
+        if (_currentUser.Role != "admin" && item.Room.Unit.UserId != _currentUser.UserId) return false;
 
         var executionId = Guid.NewGuid();
         var userContext = BuildUserContext(item.Room.Unit.User);
@@ -100,6 +103,7 @@ public class ActionService : IActionService
             .FirstOrDefaultAsync(wf => wf.SmartWorkflowId == smartWorkflowId);
 
         if (workflow == null) return false;
+        if (_currentUser.Role != "admin" && workflow.UserId != _currentUser.UserId) return false;
 
         var executionId = Guid.NewGuid();
         var workflowContext = BuildWorkflowContext(workflow);
@@ -126,10 +130,16 @@ public class ActionService : IActionService
     /// </summary>
     public async Task<List<ActionLogDto>> GetActionLogs()
     {
-        var logs = await _db.ActionLogs
+        var query = _db.ActionLogs
             .OrderByDescending(l => l.Timestamp)
-            .ToListAsync();
+            .AsQueryable();
 
+        if (_currentUser.Role != "admin")
+            query = query.Where(l =>
+                (l.SmartWorkflowId != null && l.SmartWorkflow!.UserId == _currentUser.UserId) ||
+                (l.SmartWorkflowId == null && l.ItemState!.Item.Room.Unit.UserId == _currentUser.UserId));
+
+        var logs = await query.ToListAsync();
         return logs.Select(MapResponse).ToList();
     }
 

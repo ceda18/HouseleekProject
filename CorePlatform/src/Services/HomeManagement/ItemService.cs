@@ -10,31 +10,39 @@ namespace CorePlatform.src.Services;
 public class ItemService : IItemService
 {
     private readonly AppDbContext _db;
+    private readonly ICurrentUser _currentUser;
 
-    public ItemService(AppDbContext db)
+    public ItemService(AppDbContext db, ICurrentUser currentUser)
     {
         _db = db;
+        _currentUser = currentUser;
     }
 
     public async Task<List<ItemDto>> GetItems()
     {
-        var items = await _db.Items
-            .Include(i => i.ItemModel)
-                .ThenInclude(im => im.ItemCategory)
-            .Include(i => i.ItemStates)
-                .ThenInclude(is_ => is_.ActionDefinition)
-            .ToListAsync();
-        return items.Select(i => MapResponse(i)).ToList();
+        var query = _db.Items
+            .Include(i => i.ItemModel).ThenInclude(im => im.ItemCategory)
+            .Include(i => i.ItemStates).ThenInclude(is_ => is_.ActionDefinition)
+            .AsQueryable();
+
+        if (_currentUser.Role != "admin")
+            query = query.Where(i => i.Room.Unit.UserId == _currentUser.UserId);
+
+        var items = await query.ToListAsync();
+        return items.Select(MapResponse).ToList();
     }
 
     public async Task<ItemDto?> GetItem(int id)
     {
-        var item = await _db.Items
-            .Include(i => i.ItemModel)
-                .ThenInclude(im => im.ItemCategory)
-            .Include(i => i.ItemStates)
-                .ThenInclude(is_ => is_.ActionDefinition)
-            .FirstOrDefaultAsync(i => i.ItemId == id);
+        var query = _db.Items
+            .Include(i => i.ItemModel).ThenInclude(im => im.ItemCategory)
+            .Include(i => i.ItemStates).ThenInclude(is_ => is_.ActionDefinition)
+            .Where(i => i.ItemId == id);
+
+        if (_currentUser.Role != "admin")
+            query = query.Where(i => i.Room.Unit.UserId == _currentUser.UserId);
+
+        var item = await query.FirstOrDefaultAsync();
         return item == null ? null : MapResponse(item);
     }
 
@@ -65,6 +73,12 @@ public class ItemService : IItemService
     {
         var item = await _db.Items.FindAsync(id);
         if (item == null) return false;
+        if (_currentUser.Role != "admin")
+        {
+            var owned = await _db.Items
+                .AnyAsync(i => i.ItemId == id && i.Room.Unit.UserId == _currentUser.UserId);
+            if (!owned) return false;
+        }
         _db.Items.Remove(item);
         var affected = await _db.SaveChangesAsync();
         return affected > 0;
