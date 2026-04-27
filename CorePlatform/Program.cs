@@ -58,12 +58,20 @@ builder.Services.AddDbContext<AgentDbContext>(options =>
 
 // CONTROLLERS
 builder.Services.AddControllers();
+builder.Services.AddMemoryCache();
+builder.Services.AddHttpClient("AgentService", client =>
+{
+    client.BaseAddress = new Uri(builder.Configuration["AgentService:Url"]!);
+    client.DefaultRequestHeaders.Add("X-Agent-Api-Key", builder.Configuration["AgentService:ApiKey"]!);
+});
 
 // SERVICES
 // Authentification
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<ICurrentUser, CurrentUser>();
+// AI Agent
+builder.Services.AddScoped<IAIAgentService, AIAgentService>();
 // User Management
 builder.Services.AddScoped<IUserService, UserService>();
 // Home Management

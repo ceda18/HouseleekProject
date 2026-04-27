@@ -1,0 +1,5 @@
+AIAgent/.env
+CorePlatform/appsettings.json
+CorePlatform/bin/
+CorePlatform/obj/
+.DS_Store
