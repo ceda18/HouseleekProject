@@ -34,9 +34,9 @@ sleep 0.5
 
 # AIAgent (FastAPI) — use venv if available, otherwise system python
 if [ -d "$SCRIPT_DIR/AIAgent/.venv" ]; then
-  AGENT_CMD="source .venv/bin/activate && uvicorn main:app --reload --port 8000"
+  AGENT_CMD="source .venv/bin/activate && python3 -m uvicorn main:app --reload --port 8000"
 else
-  AGENT_CMD="uvicorn main:app --reload --port 8000"
+  AGENT_CMD="python3 -m uvicorn main:app --reload --port 8000"
 fi
 
 osascript -e "
@@ -58,7 +58,7 @@ echo "  ✓  Three terminals opened:"
 echo ""
 echo "     CorePlatform  →  http://localhost:5071"
 echo "     AIAgent       →  http://localhost:8000"
-echo "     WebApp        →  http://localhost:5173"
+echo "     WebApp        →  http://localhost:3000"
 echo ""
 echo "  API docs: http://localhost:5071/scalar/v1"
 echo ""

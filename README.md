@@ -1,15 +1,19 @@
-# Houseleek 🪴
+<img src="WebApp/src/assets/logo-vertical.png" alt="Houseleek" width="120" />
+<br>
+<br>
 
-Houseleek is a smart home management system developed as a graduate thesis, featuring an AI agent built on Anthropic Claude for natural language control and analytics of IoT devices.
+# Project Houseleek 🏠
+
+>[!NOTE] Houseleek is a **smart home management system** developed as a graduate thesis, featuring an **AI agent** built on Anthropic Claude for natural language control and analytics of **IoT devices**.
 
 ---
 
-❗️ Please read the following README file carefully.
+> [!IMPORTANT] Please read the following README file carefully.
 It is an installation manual for the entire software to run it locally on your Mac/Linux.
 
 ---
 
-👉 For a thorough look into this project, look into reading the [thesis](https://github.com/ceda18/HouseleekProject/blob/main/THESIS.pdf) itself. The language used throughout the documentation is Serbian.
+> [!NOTE] 👉 For a thorough look into this project, look into reading the [thesis](https://github.com/ceda18/HouseleekProject/blob/main/THESIS.pdf) itself. The language used throughout the documentation is Serbian.
 
 ---
 
@@ -19,7 +23,7 @@ The system consists of three services that run together:
 |---|---|---|
 | CorePlatform | ASP.NET Core 10 | `http://localhost:5071` |
 | AIAgent | Python 3 / FastAPI | `http://localhost:8000` |
-| WebApp | React / Vite | `http://localhost:5173` |
+| WebApp | React / Vite | `http://localhost:3000` |
 
 API documentation is available at `http://localhost:5071/scalar/v1` when running.
 
@@ -40,10 +44,10 @@ The following must be installed manually before running setup:
 
 ---
 
-> [!IMPORTANT]
+> [!WARRNING]
 > **An Anthropic API key is required for the AI Agent to function.**
 > Without it the app runs but the AI chat feature will not work.
-> Get your key at [console.anthropic.com](https://console.anthropic.com/) — you will be prompted to paste it during setup.
+> Get your key at [console.anthropic.com](https://console.anthropic.com/). You will be prompted to paste it during setup.
 
 ---
 
@@ -72,18 +76,18 @@ After setup, start all three services with:
 ./run.sh
 ```
 
-This opens three separate Terminal windows — one per service. Wait a few seconds for CorePlatform to finish starting before using the app.
+This opens three separate Terminal windows, one per service. Wait a few seconds for CorePlatform to finish starting up before using the app.
 
 ---
 
 ## Test Account
 
-A test user is always available after seeding:
-
-| Field | Value |
-|---|---|
-| Email | `pera.peric@gmail.com` |
-| Password | `lozinka123` |
+> [!TIP] A test user is always available after seeding:
+>
+>| Field | Value |
+>|---|---|
+>| Email | `pera.peric@gmail.com` |
+>| Password | `lozinka123` |
 
 ---
 
