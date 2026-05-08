@@ -1,5 +1,4 @@
-<img src="WebApp/src/assets/logo-vertical.png" alt="Houseleek" width="120" />
-<br>
+<img src="WebApp/src/assets/logo-vertical.png" alt="Houseleek" width="130" />
 <br>
 
 # Project Houseleek 🏠
@@ -44,7 +43,7 @@ The following must be installed manually before running setup:
 
 ---
 
-> [!WARRNING]
+> [!IMPORTANT]
 > **An Anthropic API key is required for the AI Agent to function.**
 > Without it the app runs but the AI chat feature will not work.
 > Get your key at [console.anthropic.com](https://console.anthropic.com/). You will be prompted to paste it during setup.
