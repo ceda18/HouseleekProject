@@ -5,6 +5,8 @@
 
 Houseleek is a **smart home management system** developed as a graduate thesis, featuring an **AI agent** built on Anthropic Claude for natural language control and analytics of **IoT devices**.
 
+---
+
 > [!IMPORTANT] 
 > ✅ If you wanna test the app **online**, you may be able to do that on the following link:
 > [houseleek.up.railway.app](https://houseleek.up.railway.app).
