@@ -3,16 +3,18 @@
 
 # Project Houseleek 🏠
 
->[!NOTE] Houseleek is a **smart home management system** developed as a graduate thesis, featuring an **AI agent** built on Anthropic Claude for natural language control and analytics of **IoT devices**.
+> Houseleek is a **smart home management system** developed as a graduate thesis, featuring an **AI agent** built on Anthropic Claude for natural language control and analytics of **IoT devices**.
 
 ---
 
-> [!IMPORTANT] Please read the following README file carefully.
+> [!IMPORTANT]
+> Please read the following README file carefully.
 It is an installation manual for the entire software to run it locally on your Mac/Linux.
 
 ---
 
-> [!NOTE] 👉 For a thorough look into this project, look into reading the [thesis](https://github.com/ceda18/HouseleekProject/blob/main/THESIS.pdf) itself. The language used throughout the documentation is Serbian.
+> [!NOTE]
+> 👉 For a thorough look into this project, look into reading the [thesis](https://github.com/ceda18/HouseleekProject/blob/main/THESIS.pdf) itself. The language used throughout the documentation is Serbian.
 
 ---
 
@@ -43,7 +45,7 @@ The following must be installed manually before running setup:
 
 ---
 
-> [!IMPORTANT]
+> [!WARNING]
 > **An Anthropic API key is required for the AI Agent to function.**
 > Without it the app runs but the AI chat feature will not work.
 > Get your key at [console.anthropic.com](https://console.anthropic.com/). You will be prompted to paste it during setup.
@@ -81,12 +83,14 @@ This opens three separate Terminal windows, one per service. Wait a few seconds 
 
 ## Test Account
 
-> [!TIP] A test user is always available after seeding:
+> [!TIP]
+> A test user is always available after seeding:
 >
 >| Field | Value |
 >|---|---|
 >| Email | `pera.peric@gmail.com` |
 >| Password | `lozinka123` |
+>
 
 ---
 
