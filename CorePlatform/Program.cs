@@ -29,7 +29,25 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Railway injects PORT — use it when running in production
+var port = Environment.GetEnvironmentVariable("PORT");
+if (port != null)
+    builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
+
 builder.Services.AddOpenApi();
+
+// CORS — allow frontend origin (configured via AllowedOrigins env var, fallback to localhost)
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        var origins = builder.Configuration["AllowedOrigins"]?.Split(',')
+                      ?? ["http://localhost:3000"];
+        policy.WithOrigins(origins)
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+    });
+});
 
 // JWT AUTHENTICATION
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -120,7 +138,10 @@ app.UseExceptionHandler(handler => handler.Run(async ctx =>
 
 ///////
 
-app.UseHttpsRedirection();
+if (app.Environment.IsDevelopment())
+    app.UseHttpsRedirection();
+
+app.UseCors();
 app.MapControllers();
 
 //////
