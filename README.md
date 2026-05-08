@@ -1,4 +1,4 @@
-<img src="WebApp/src/assets/logo-vertical.png" alt="Houseleek" width="130" />
+<img src="WebApp/src/assets/logo-vertical.png" alt="Houseleek" width="160" />
 <br>
 
 # Project Houseleek 🏠
