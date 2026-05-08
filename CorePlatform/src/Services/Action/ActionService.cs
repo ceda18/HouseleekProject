@@ -48,8 +48,8 @@ public class ActionService : IActionService
             var dbState = item.ItemStates.FirstOrDefault(is_ => is_.ItemStateId == requestState.ItemStateId);
             if (dbState == null) continue;
 
-            var newValue = requestState.Value?.ToString() ?? string.Empty;
-            if (dbState.Value == newValue) continue;
+            var newValue = requestState.Value?.ToString()?.ToLowerInvariant() ?? string.Empty;
+            if (string.Equals(dbState.Value, newValue, StringComparison.OrdinalIgnoreCase)) continue;
 
             var (isValid, error) = ValueTypeValidator.Validate(newValue, dbState.ActionDefinition);
             if (!isValid) throw new ArgumentException(error);
