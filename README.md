@@ -8,9 +8,11 @@ Houseleek is a **smart home management system** developed as a graduate thesis, 
 ---
 
 > [!IMPORTANT] 
-> ✅ If you wanna test the app, you may do that on the following link:
-> [houseleek.up.railway.app](https://houseleek.up.railway.app)
-
+> ✅ If you wanna test the app **online**, you may be able to do that on the following link:
+> [houseleek.up.railway.app](https://houseleek.up.railway.app).
+---
+> The server might not be always up. Consider running it locally.
+---
 > [!IMPORTANT]
 > ❗️ Please read the following README.md file carefully if you are looking for running the app locally. Here below is the installation manual for Mac/Linux.
 
