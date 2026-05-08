@@ -1,8 +1,0 @@
-[phases.setup]
-nixPkgs = ["dotnet-sdk_10"]
-
-[phases.build]
-cmds = ["dotnet publish -c Release -o out"]
-
-[start]
-cmd = "dotnet out/CorePlatform.dll"
