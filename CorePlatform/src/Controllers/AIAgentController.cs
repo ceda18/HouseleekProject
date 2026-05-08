@@ -52,8 +52,21 @@ public class AIAgentController : ControllerBase
     [HttpPost("proposals/apply")]
     public async Task<IActionResult> ApplyProposal([FromBody] ApplyProposalRequest request)
     {
-        var result = await _aiAgentService.ApplyProposal(request);
-        return result ? Ok() : BadRequest("Could not apply proposal.");
+        try
+        {
+            var result = await _aiAgentService.ApplyProposal(request);
+            return result ? Ok() : BadRequest(new { message = "Could not apply proposal." });
+        }
+        catch (ArgumentException ex)
+        {
+            // Validation failures from PostScene / PostAutomation / PostItem
+            return BadRequest(new { message = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            // FK constraint, EF errors, anything else — surface the message instead of a bare 500
+            return StatusCode(500, new { message = ex.Message });
+        }
     }
 
     /// <summary>Clears the in-memory chat history and resets the agent session.</summary>

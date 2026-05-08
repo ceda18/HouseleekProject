@@ -1,0 +1,283 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  body {
+    @apply bg-bg text-text-primary font-sans antialiased;
+    min-height: 100vh;
+  }
+
+  /* Scrollbar styling */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-border rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-text-muted;
+  }
+}
+
+@layer components {
+
+  /* ─── Liquid Glass Surface ─────────────────────────────── */
+  .glass {
+    background: rgba(255, 255, 255, 0.35);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.65);
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.06),
+      0 1px 0 rgba(255, 255, 255, 0.85) inset,
+      0 -1px 0 rgba(0, 0, 0, 0.03) inset;
+  }
+
+  .glass-strong {
+    background: rgba(255, 255, 255, 0.80);
+    backdrop-filter: blur(40px) saturate(200%);
+    -webkit-backdrop-filter: blur(40px) saturate(200%);
+    border: 1px solid rgba(255, 255, 255, 0.75);
+    box-shadow:
+      0 16px 48px rgba(0, 0, 0, 0.08),
+      0 1px 0 rgba(255, 255, 255, 0.9) inset,
+      0 -1px 0 rgba(0, 0, 0, 0.04) inset;
+  }
+
+  .glass-subtle {
+    background: rgba(255, 255, 255, 0.20);
+    backdrop-filter: blur(12px) saturate(150%);
+    -webkit-backdrop-filter: blur(12px) saturate(150%);
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    box-shadow:
+      0 4px 16px rgba(0, 0, 0, 0.04),
+      0 1px 0 rgba(255, 255, 255, 0.6) inset;
+  }
+
+  /* Accent-tinted glass (used for active states, AI panel) */
+  .glass-accent {
+    background: rgba(0, 186, 199, 0.08);
+    backdrop-filter: blur(20px) saturate(160%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+    border: 1px solid rgba(0, 186, 199, 0.25);
+    box-shadow:
+      0 8px 32px rgba(0, 186, 199, 0.08),
+      0 1px 0 rgba(255, 255, 255, 0.7) inset;
+  }
+
+  /* ─── Specular highlight strip (top edge shimmer) ────── */
+  .glass-shimmer {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .glass-shimmer::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg,
+        rgba(255, 255, 255, 0.35) 0%,
+        rgba(255, 255, 255, 0.0) 40%);
+    pointer-events: none;
+    border-radius: inherit;
+    z-index: 1;
+  }
+
+  /* ─── Background ambient blobs ────────────────────────── */
+  .app-bg {
+    position: fixed;
+    inset: 0;
+    background: #F2F2F7;
+    overflow: hidden;
+    z-index: -1;
+  }
+
+  .app-bg::before {
+    content: '';
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0, 186, 199, 0.12) 0%, transparent 70%);
+    top: -200px;
+    right: -100px;
+    pointer-events: none;
+  }
+
+  .app-bg::after {
+    content: '';
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(107, 107, 138, 0.08) 0%, transparent 70%);
+    bottom: -100px;
+    left: 100px;
+    pointer-events: none;
+  }
+
+  /* ─── Sidebar ──────────────────────────────────────────── */
+  .sidebar {
+    background: rgba(255, 255, 255, 0.65);
+    backdrop-filter: blur(32px) saturate(180%);
+    -webkit-backdrop-filter: blur(32px) saturate(180%);
+    border-right: 1px solid rgba(255, 255, 255, 0.6);
+    box-shadow: 2px 0 24px rgba(0, 0, 0, 0.05);
+  }
+
+  /* ─── Nav item ─────────────────────────────────────────── */
+  .nav-item {
+    @apply flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-text-secondary transition-all duration-150 cursor-pointer select-none;
+  }
+
+  .nav-item:hover {
+    @apply bg-white/60 text-text-primary;
+  }
+
+  .nav-item.active {
+    @apply text-accent;
+    background: rgba(0, 186, 199, 0.1);
+    border: 1px solid rgba(0, 186, 199, 0.2);
+    box-shadow: 0 2px 8px rgba(0, 186, 199, 0.1);
+  }
+
+  /* ─── Buttons ──────────────────────────────────────────── */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 font-medium rounded-xl transition-all duration-150 cursor-pointer select-none focus:outline-none focus:ring-2 focus:ring-offset-1 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-sm {
+    @apply btn px-3 py-1.5 text-xs;
+  }
+
+  .btn-md {
+    @apply btn px-4 py-2.5 text-sm;
+  }
+
+  .btn-lg {
+    @apply btn px-6 py-3 text-base;
+  }
+
+  .btn-primary {
+    @apply bg-accent text-white hover:bg-accent-hover active:bg-accent-press focus:ring-accent/40;
+    box-shadow: 0 4px 12px rgba(0, 186, 199, 0.25);
+  }
+
+  .btn-primary:hover {
+    box-shadow: 0 6px 16px rgba(0, 186, 199, 0.35);
+  }
+
+  .btn-ghost {
+    @apply text-text-secondary hover:bg-white/70 hover:text-text-primary active:bg-white/90 focus:ring-accent/30;
+  }
+
+  .btn-danger {
+    @apply bg-red-500 text-white hover:bg-red-600 active:bg-red-700 focus:ring-red-400/40;
+  }
+
+  .btn-outline {
+    @apply border border-border text-text-secondary bg-white/50 hover:bg-white hover:text-text-primary active:bg-surface-raised focus:ring-accent/30;
+  }
+
+  /* ─── Input / Select ───────────────────────────────────── */
+  .input {
+    @apply w-full px-3 py-2.5 text-sm text-text-primary rounded-xl bg-white/70 border border-border/80 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent/50 placeholder:text-text-muted transition-all duration-150;
+    backdrop-filter: blur(8px);
+  }
+
+  .input:hover:not(:focus) {
+    @apply border-text-muted/60;
+  }
+
+  /* ─── Badge ────────────────────────────────────────────── */
+  .badge {
+    @apply inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium;
+  }
+
+  .badge-accent {
+    @apply badge bg-accent-soft text-accent;
+  }
+
+  .badge-success {
+    @apply badge bg-green-100 text-green-700;
+  }
+
+  .badge-warning {
+    @apply badge bg-amber-100 text-amber-700;
+  }
+
+  .badge-danger {
+    @apply badge bg-red-100 text-red-600;
+  }
+
+  .badge-neutral {
+    @apply badge bg-text-muted/15 text-text-secondary;
+  }
+
+  /* ─── Table ────────────────────────────────────────────── */
+  .table-wrapper {
+    @apply glass rounded-2xl overflow-hidden;
+  }
+
+  .table-wrapper table {
+    @apply w-full text-sm;
+  }
+
+  .table-wrapper thead tr {
+    @apply border-b border-border/60;
+  }
+
+  .table-wrapper thead th {
+    @apply px-4 py-3 text-left text-xs font-semibold text-text-muted uppercase tracking-wide;
+  }
+
+  .table-wrapper tbody tr {
+    @apply border-b border-border/30 transition-colors duration-100;
+  }
+
+  .table-wrapper tbody tr:last-child {
+    @apply border-0;
+  }
+
+  .table-wrapper tbody tr:hover {
+    background: rgba(0, 186, 199, 0.04);
+  }
+
+  .table-wrapper tbody td {
+    @apply px-4 py-3 text-text-secondary;
+  }
+
+  /* ─── Modal overlay ────────────────────────────────────── */
+  .modal-overlay {
+    @apply fixed inset-0 z-50 flex items-center justify-center p-4;
+    background: rgba(26, 26, 46, 0.35);
+    backdrop-filter: blur(4px);
+  }
+
+  .modal-panel {
+    @apply glass-strong rounded-3xl p-6 w-full max-w-md shadow-glass-lg;
+    position: relative;
+    z-index: 51;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}

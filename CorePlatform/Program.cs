@@ -98,6 +98,28 @@ if (app.Environment.IsDevelopment())
     app.MapScalarApiReference();
 }
 
+///////
+
+// Global exception handler — surfaces real error messages to the frontend
+// instead of bare 500s. ArgumentException → 400 (validation), everything else → 500.
+app.UseExceptionHandler(handler => handler.Run(async ctx =>
+{
+    var feature = ctx.Features.Get<Microsoft.AspNetCore.Diagnostics.IExceptionHandlerFeature>();
+    var ex = feature?.Error;
+    if (ex == null) return;
+
+    // Log the full exception so the developer terminal still sees the stack trace
+    Console.Error.WriteLine($"[GlobalException] {ex.GetType().Name}: {ex.Message}");
+    Console.Error.WriteLine(ex.StackTrace);
+
+    ctx.Response.StatusCode = ex is ArgumentException ? 400 : 500;
+    ctx.Response.ContentType = "application/json";
+    await ctx.Response.WriteAsJsonAsync(new { message = ex.Message });
+}));
+
+
+///////
+
 app.UseHttpsRedirection();
 app.MapControllers();
 

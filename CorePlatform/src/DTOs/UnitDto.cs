@@ -9,6 +9,6 @@ public class UnitDto
     public string Name { get; set; } = null!;
     public int UserId { get; set; }
     public int UnitTypeId { get; set; }
-    public string UnitTypeName { get; set; } = null!;
+    public string? UnitTypeName { get; set; }
     public List<RoomDto> Rooms { get; set; } = new();
 }

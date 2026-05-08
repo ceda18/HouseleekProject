@@ -40,11 +40,16 @@ CREATE_PROPOSAL: dict = {
             "payload": {
                 "type": "object",
                 "description": (
-                    "The complete creation payload. "
-                    "For 'scene': { name, smartActions: [{ itemStateId, value }] }. "
-                    "For 'automation': { name, smartActions: [{ itemStateId, value }], "
-                    "triggers: [{ triggerType, valueType, value, operand, itemStateId }] }. "
-                    "For 'item': { name, roomId, itemModelId }."
+                    "The complete creation payload — keys MUST be camelCase, matching the "
+                    "CorePlatform DTOs that the frontend uses. Examples:\n"
+                    "  scene:      { name, smartActions: [{ itemStateId, value }] }\n"
+                    "  automation: { name, "
+                    "smartActions: [{ itemStateId, value }] (use { targetSceneId } for scene actions), "
+                    "triggers: [{ triggerType, valueType, value, operand, itemStateId }] (triggerType must be either 'state-driven' or 'time-driven') }\n"
+                    "  item:       { name, roomId, itemModelId, itemModelName, itemCategoryName }\n"
+                    "Only use itemStateId / roomId / itemModelId values from the snapshot. "
+                    "For 'item', look up itemModelName and itemCategoryName from the snapshot's "
+                    "itemModels / categories so the preview can render meaningful labels."
                 )
             }
         },
@@ -52,4 +57,19 @@ CREATE_PROPOSAL: dict = {
     }
 }
 
-TOOLS: list[dict] = [EXECUTE_ANALYTICS_QUERY, CREATE_PROPOSAL]
+GET_CATALOG: dict = {
+    "name": "get_catalog",
+    "description": (
+        "Fetches the full list of available device models from the catalog. "
+        "Use this ONLY when the user asks to add a new device or wants to know "
+        "what device models are available. Returns itemModelId, name, category, and vendor "
+        "for each model — use these values when building an 'item' proposal payload."
+    ),
+    "input_schema": {
+        "type": "object",
+        "properties": {},
+        "required": []
+    }
+}
+
+TOOLS: list[dict] = [EXECUTE_ANALYTICS_QUERY, GET_CATALOG, CREATE_PROPOSAL]

@@ -11,8 +11,6 @@ public class ValueTypeParser
     {
         switch (valueType.ToLowerInvariant())
         {
-            case "string":
-                return value;
             case "int":
             case "integer":
                 return (object)int.Parse(value);
@@ -26,8 +24,11 @@ public class ValueTypeParser
             case "datetime":
             case "date":
                 return (object)DateTime.Parse(value);
+            case "string":
+                return value;
             default:
                 break;
+            
         }
 
         throw new ArgumentException($"Unsupported value type: {valueType}");

@@ -7,7 +7,7 @@ public class RoomDto
     public string Name { get; set; } = null!;
     public int UnitId { get; set; }
     public int RoomTypeId { get; set; }
-    public string RoomTypeName { get; set; } = null!;
+    public string? RoomTypeName { get; set; }
     public List<ItemDto> Items { get; set; } = new();
     
 }

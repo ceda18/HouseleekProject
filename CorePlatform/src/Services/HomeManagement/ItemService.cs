@@ -96,8 +96,8 @@ public class ItemService : IItemService
             Name = item.Name,
             RoomId = item.RoomId,
             ItemModelId = item.ItemModelId,
-            ItemModelName = item.ItemModel.Name,
-            ItemCategoryName = item.ItemModel.ItemCategory.Name,
+            ItemModelName = item.ItemModel?.Name ?? string.Empty,
+            ItemCategoryName = item.ItemModel?.ItemCategory?.Name ?? string.Empty,
             ItemStates = item.ItemStates.Select(is_ => new ItemDto.ItemStateDto
             {
                 ItemStateId = is_.ItemStateId,

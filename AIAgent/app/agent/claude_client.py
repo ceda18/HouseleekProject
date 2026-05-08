@@ -10,6 +10,8 @@ from app.agent.prompts import build_system_prompt
 from app.models.chat import Message, ChatResponse
 from app.models.proposal import ProposalPayload
 from app.services.analytics import execute_analytics_query
+from app.services.core_client import get as core_get
+import json
 
 _client = anthropic.Anthropic(api_key=settings.anthropic_api_key)
 
@@ -35,6 +37,15 @@ def clear_session(user_id: int) -> None:
 async def invoke(user_id: int, message: str, history: list[Message]) -> ChatResponse:
     snapshot = _sessions.get(user_id, {})
     system_prompt = build_system_prompt(snapshot)
+    # System prompt is identical for every turn in the same session —
+    # prompt caching avoids re-billing those tokens on every message.
+    system_with_cache = [
+        {
+            "type": "text",
+            "text": system_prompt,
+            "cache_control": {"type": "ephemeral"},
+        }
+    ]
 
     # Build the message list Claude expects
     messages = [{"role": m.role, "content": m.content} for m in history]
@@ -46,7 +57,7 @@ async def invoke(user_id: int, message: str, history: list[Message]) -> ChatResp
         response = _client.messages.create(
             model=settings.anthropic_model,
             max_tokens=4096,
-            system=system_prompt,
+            system=system_with_cache,
             tools=TOOLS,
             messages=messages,
         )
@@ -67,7 +78,7 @@ async def invoke(user_id: int, message: str, history: list[Message]) -> ChatResp
                     tool_results.append({
                         "type": "tool_result",
                         "tool_use_id": block.id,
-                        "content": str(result),
+                        "content": json.dumps(result, default=str),
                     })
 
                 elif block.name == "create_proposal":
@@ -79,6 +90,14 @@ async def invoke(user_id: int, message: str, history: list[Message]) -> ChatResp
                         "type": "tool_result",
                         "tool_use_id": block.id,
                         "content": "Proposal created successfully.",
+                    })
+
+                elif block.name == "get_catalog":
+                    catalog = await core_get("/api/catalog/item-models")
+                    tool_results.append({
+                        "type": "tool_result",
+                        "tool_use_id": block.id,
+                        "content": json.dumps(catalog, default=str),
                     })
 
             # Append assistant turn (with tool_use blocks) and tool results
@@ -94,6 +113,6 @@ async def invoke(user_id: int, message: str, history: list[Message]) -> ChatResp
 # ─── HELPERS ─────────────────────────────────────────────────────────────────
 
 def _extract_text(content_blocks) -> str:
-    return " ".join(
+    return "\n\n".join(
         block.text for block in content_blocks if hasattr(block, "text")
     ).strip()

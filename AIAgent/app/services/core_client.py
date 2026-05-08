@@ -21,3 +21,13 @@ async def post(path: str, body: dict) -> Union[dict, list, str]:
         if not response.is_success:
             return {"error": response.text}
         return response.json()
+    
+async def get(path: str):
+    async with httpx.AsyncClient(verify=False) as client:
+        response = await client.get(
+            f"{settings.core_platform_url}{path}",
+            headers=_HEADERS,
+            timeout=30.0,
+        )
+        response.raise_for_status()
+        return response.json()

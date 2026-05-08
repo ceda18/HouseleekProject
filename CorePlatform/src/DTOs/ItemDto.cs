@@ -9,8 +9,8 @@ public class ItemDto
     public string Name { get; set; } = null!;
     public int RoomId { get; set; }
     public int ItemModelId { get; set; }
-    public string ItemModelName { get; set; } = null!;
-    public string ItemCategoryName { get; set; } = null!;
+    public string? ItemModelName { get; set; }
+    public string? ItemCategoryName { get; set; }
     public List<ItemStateDto> ItemStates { get; set; } = new();
 
     public class ItemStateDto

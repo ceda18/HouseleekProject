@@ -1,5 +1,23 @@
+# Environment & secrets
 AIAgent/.env
 CorePlatform/appsettings.json
+
+# .NET build output
 CorePlatform/bin/
 CorePlatform/obj/
+
+# Python
+AIAgent/__pycache__/
+AIAgent/**/__pycache__/
+AIAgent/*.pyc
+AIAgent/.venv/
+AIAgent/venv/
+
+# Node
+WebApp/node_modules/
+WebApp/dist/
+WebApp/.vite/
+
+# OS
 .DS_Store
+Thumbs.db

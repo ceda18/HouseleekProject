@@ -208,8 +208,8 @@ public class AutomationService : IAutomationService
             triggers.Add(new AutomationTrigger
             {
                 AutomationId = automationId,
-                TriggerType = t.TriggerType,
-                ValueType = t.ValueType,
+                TriggerType = Normalizer.NormalizeTriggerType(t.TriggerType),
+                ValueType   = Normalizer.NormalizeValueType(t.ValueType),
                 Value = t.Value?.ToString() ?? string.Empty,
                 Operand = t.Operand,
                 ItemStateId = t.ItemStateId

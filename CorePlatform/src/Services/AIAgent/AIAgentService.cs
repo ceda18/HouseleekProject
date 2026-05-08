@@ -2,6 +2,7 @@ using System.Data;
 using System.Text.Json;
 using CorePlatform.src.Data;
 using CorePlatform.src.DTOs;
+using CorePlatform.src.Utility;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 
@@ -9,7 +10,7 @@ namespace CorePlatform.src.Services;
 
 public class AIAgentService : IAIAgentService
 {
-    private readonly AppDbContext _db;
+    //private readonly AppDbContext _db;
     private readonly AgentDbContext _agentDb;
     private readonly ICurrentUser _currentUser;
     private readonly IMemoryCache _cache;
@@ -18,16 +19,30 @@ public class AIAgentService : IAIAgentService
     private readonly IAutomationService _automationService;
     private readonly IItemService _itemService;
 
+    /// <summary>
+    /// Used ONLY for talking to the Python AIAgent service (snake_case is its idiom).
+    /// </summary>
     private static readonly JsonSerializerOptions _agentJsonOptions = new()
     {
         PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower,
         PropertyNameCaseInsensitive = true
     };
 
+    /// <summary>
+    /// Used to deserialize proposal payloads (Scene/Automation/Item) coming back from the agent.
+    /// Claude is instructed (in tools.py) to emit camelCase keys — same as frontend uses
+    /// when calling /scenes, /automations, /items directly. Default ASP.NET conventions.
+    /// </summary>
+    private static readonly JsonSerializerOptions _proposalApplyOptions = new()
+    {
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+        PropertyNameCaseInsensitive = true
+    };
+
     private string HistoryCacheKey => $"agent_history_{_currentUser.UserId}";
 
     public AIAgentService(
-        AppDbContext db,
+        //AppDbContext db,
         AgentDbContext agentDb,
         ICurrentUser currentUser,
         IMemoryCache cache,
@@ -36,7 +51,7 @@ public class AIAgentService : IAIAgentService
         IAutomationService automationService,
         IItemService itemService)
     {
-        _db = db;
+        //_db = db;
         _agentDb = agentDb;
         _currentUser = currentUser;
         _cache = cache;
@@ -122,24 +137,24 @@ public class AIAgentService : IAIAgentService
     /// </summary>
     public async Task<bool> ApplyProposal(ApplyProposalRequest request)
     {
-        var json = request.Payload.GetRawText();
+        var json = Normalizer.NormalizeJsonKeysToCamelCase(request.Payload.GetRawText()); // Ensure camelCase keys before deserialization, in case the agent emitted snake_case or inconsistent casing.
 
         switch (request.Type.ToLowerInvariant())
         {
             case "scene":
-                var sceneDto = JsonSerializer.Deserialize<SceneDto>(json, _agentJsonOptions);
+                var sceneDto = JsonSerializer.Deserialize<SceneDto>(json, _proposalApplyOptions);
                 if (sceneDto == null) return false;
                 await _sceneService.PostScene(sceneDto);
                 return true;
 
             case "automation":
-                var automationDto = JsonSerializer.Deserialize<AutomationDto>(json, _agentJsonOptions);
+                var automationDto = JsonSerializer.Deserialize<AutomationDto>(json, _proposalApplyOptions);
                 if (automationDto == null) return false;
                 await _automationService.PostAutomation(automationDto);
                 return true;
 
             case "item":
-                var itemDto = JsonSerializer.Deserialize<ItemDto>(json, _agentJsonOptions);
+                var itemDto = JsonSerializer.Deserialize<ItemDto>(json, _proposalApplyOptions);
                 if (itemDto == null) return false;
                 await _itemService.PostItem(itemDto);
                 return true;
@@ -214,7 +229,7 @@ public class AIAgentService : IAIAgentService
     {
         var userId = _currentUser.UserId;
 
-        var units = await _db.Units
+        var units = await _agentDb.Units
             .Include(u => u.Rooms)
                 .ThenInclude(r => r.Items)
                     .ThenInclude(i => i.ItemStates)
@@ -226,15 +241,19 @@ public class AIAgentService : IAIAgentService
             .Where(u => u.UserId == userId)
             .ToListAsync();
 
-        var scenes = await _db.Scenes
+        var scenes = await _agentDb.Scenes
             .Include(s => s.SceneNavigation)
+                .ThenInclude(sw => sw.SmartActions)
             .Where(s => s.SceneNavigation.UserId == userId)
             .ToListAsync();
 
-        var automations = await _db.Automations
+        var automations = await _agentDb.Automations
             .Include(a => a.AutomationNavigation)
+                .ThenInclude(sw => sw.SmartActions)
+            .Include(a => a.AutomationTriggers)
             .Where(a => a.AutomationNavigation.UserId == userId)
             .ToListAsync();
+
 
         return new
         {
@@ -251,14 +270,17 @@ public class AIAgentService : IAIAgentService
                     {
                         itemId = i.ItemId,
                         name = i.Name,
-                        category = i.ItemModel.ItemCategory.Name,
+                        itemModelId = i.ItemModelId,
+                        itemCategoryName = i.ItemModel.ItemCategory.Name,
                         states = i.ItemStates.Select(is_ => new
                         {
                             itemStateId = is_.ItemStateId,
                             actionDefinition = is_.ActionDefinition.Name,
                             valueType = is_.ActionDefinition.ValueType,
                             currentValue = is_.Value,
-                            controllable = is_.ActionDefinition.Controllable
+                            controllable = is_.ActionDefinition.Controllable,
+                            min = is_.ActionDefinition.MinValue,
+                            max = is_.ActionDefinition.MaxValue
                         })
                     })
                 })
@@ -266,12 +288,32 @@ public class AIAgentService : IAIAgentService
             scenes = scenes.Select(s => new
             {
                 sceneId = s.SceneId,
-                name = s.SceneNavigation.Name
+                name = s.SceneNavigation.Name,
+                smartActions = s.SceneNavigation.SmartActions.Select(a => new
+                {
+                    itemStateId = a.ItemStateId,
+                    value = a.Value,
+                    targetSceneId = a.TargetSceneId
+                })
             }),
             automations = automations.Select(a => new
             {
                 automationId = a.AutomationId,
-                name = a.AutomationNavigation.Name
+                name = a.AutomationNavigation.Name,
+                triggers = a.AutomationTriggers.Select(t => new
+                {
+                    triggerType = t.TriggerType,
+                    valueType = t.ValueType,
+                    value = t.Value,
+                    operand = t.Operand,
+                    itemStateId = t.ItemStateId
+                }),
+                smartActions = a.AutomationNavigation.SmartActions.Select(act => new
+                {
+                    itemStateId = act.ItemStateId,
+                    value = act.Value,
+                    targetSceneId = act.TargetSceneId
+                })
             })
         };
     }
