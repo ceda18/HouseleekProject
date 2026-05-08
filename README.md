@@ -12,12 +12,12 @@ Houseleek is a **smart home management system** developed as a graduate thesis, 
 > [houseleek.up.railway.app](https://houseleek.up.railway.app)
 
 > [!IMPORTANT]
-> ❗️ Please read the following README.md file carefully if you are looking for running the app locally. Here lies the installation manual for Mac/Linux.
+> ❗️ Please read the following README.md file carefully if you are looking for running the app locally. Here below is the installation manual for Mac/Linux.
 
 ---
 
 > [!NOTE]
-> 👉 For a thorough look into this project, look into reading the [thesis](https://github.com/ceda18/HouseleekProject/blob/main/THESIS.pdf) itself. The language used throughout the documentation is Serbian.
+> 👉 For a thorough look into this project, peek inside the [final thesis](https://github.com/ceda18/HouseleekProject/blob/main/Final%20Thesis%20-%20%C4%8Ceda%20Veli%C4%8Dkovi%C4%87.pdf) itself. The language used throughout the documentation is Serbian.
 
 ---
 
