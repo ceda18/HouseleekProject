@@ -1,5 +1,2 @@
 [build]
-builder = "railpack"
-
-[deploy]
-startCommand = "mise exec -- dotnet CorePlatform.dll"
+builder = "dockerfile"

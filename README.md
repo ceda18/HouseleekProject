@@ -8,11 +8,11 @@ Houseleek is a **smart home management system** developed as a graduate thesis, 
 ---
 
 > [!IMPORTANT] 
-> 👨‍🔬 If you wanna test the app, you may do that on the following link:
+> ✅ If you wanna test the app, you may do that on the following link:
 > [houseleek.up.railway.app](https://houseleek.up.railway.app)
 
 > [!IMPORTANT]
-> Please read the following README file carefully if you are looking for running the app locally. Here lies the installation manual for Mac/Linux.
+> ❗️ Please read the following README.md file carefully if you are looking for running the app locally. Here lies the installation manual for Mac/Linux.
 
 ---
 
@@ -87,7 +87,7 @@ This opens three separate Terminal windows, one per service. Wait a few seconds 
 ## Test Account
 
 > [!TIP]
-> A test user is always available after seeding:
+> 👤 A test user is always available after seeding:
 >
 >| Field | Value |
 >|---|---|
