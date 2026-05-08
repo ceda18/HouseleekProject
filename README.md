@@ -9,7 +9,7 @@ It is an installation manual for the entire software to run it locally on your M
 
 ---
 
-👉 For a thorough look into this project, look into reading the thesis itself. The language used throughout the documentation is Serbian.
+👉 For a thorough look into this project, look into reading the [thesis](https://github.com/ceda18/HouseleekProject/blob/main/THESIS.pdf) itself. The language used throughout the documentation is Serbian.
 
 ---
 
