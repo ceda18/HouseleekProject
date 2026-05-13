@@ -807,14 +807,21 @@ insert("action_log",
        log_rows)
 
 # ─────────────────────────────────────────────────────────────────────────────
-# REFRESH AGENT ROLE PERMISSIONS
+# REFRESH ROLE PERMISSIONS
 # ─────────────────────────────────────────────────────────────────────────────
 
+# thesis_core_platform: full access
+sql("GRANT USAGE ON SCHEMA houseleek TO thesis_core_platform;")
+sql("GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA houseleek TO thesis_core_platform;")
+sql("GRANT USAGE ON ALL SEQUENCES IN SCHEMA houseleek TO thesis_core_platform;")
+nl()
+
+# thesis_agent: read-only, no user tables
 sql("GRANT USAGE ON SCHEMA houseleek TO thesis_agent;")
 sql("GRANT SELECT ON ALL TABLES IN SCHEMA houseleek TO thesis_agent;")
-sql("REVOKE SELECT ON houseleek.abstract_user FROM thesis_agent;")
-sql("REVOKE SELECT ON houseleek.admin FROM thesis_agent;")
-sql('REVOKE SELECT ON houseleek."user" FROM thesis_agent;')
+sql("REVOKE ALL ON houseleek.abstract_user FROM thesis_agent;")
+sql("REVOKE ALL ON houseleek.admin FROM thesis_agent;")
+sql('REVOKE ALL ON houseleek."user" FROM thesis_agent;')
 nl()
 
 # ─────────────────────────────────────────────────────────────────────────────

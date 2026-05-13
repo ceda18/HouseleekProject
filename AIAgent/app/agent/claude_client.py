@@ -22,7 +22,9 @@ _sessions: dict[int, dict] = {}
 _MAX_TOOL_ITERATIONS = 10
 
 
-# ─── SESSION MANAGEMENT ──────────────────────────────────────────────────────
+####################
+# SESSION MANAGEMENT
+####################
 
 def init_session(user_id: int, snapshot: dict) -> None:
     _sessions[user_id] = snapshot
@@ -31,8 +33,9 @@ def init_session(user_id: int, snapshot: dict) -> None:
 def clear_session(user_id: int) -> None:
     _sessions.pop(user_id, None)
 
-
-# ─── INVOCATION ──────────────────────────────────────────────────────────────
+####################
+# INVOCATION 
+####################
 
 async def invoke(user_id: int, message: str, history: list[Message]) -> ChatResponse:
     snapshot = _sessions.get(user_id, {})
@@ -109,8 +112,9 @@ async def invoke(user_id: int, message: str, history: list[Message]) -> ChatResp
 
     return ChatResponse(content="Could not complete the request.", proposal=proposal)
 
-
-# ─── HELPERS ─────────────────────────────────────────────────────────────────
+####################
+# HELPERS
+####################
 
 def _extract_text(content_blocks) -> str:
     return "\n\n".join(
