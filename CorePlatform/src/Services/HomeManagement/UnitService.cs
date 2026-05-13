@@ -18,6 +18,7 @@ public class UnitService : IUnitService
         _currentUser = currentUser;
     }
 
+    // SO8 // GET UNITS
     public async Task<List<UnitDto>> GetUnits()
     {
         var query = _db.Units
@@ -41,6 +42,7 @@ public class UnitService : IUnitService
         return units.Select(u => MapResponse(u)).ToList();
     }
 
+    // SO9 // GET UNIT
     public async Task<UnitDto?> GetUnit(int id)
     {
         var query = _db.Units
@@ -64,6 +66,7 @@ public class UnitService : IUnitService
         return unit == null ? null : MapResponse(unit);
     }
 
+    // SO7 // POST UNIT
     public async Task<UnitDto> PostUnit(UnitDto request)
     {
         Unit unit = MapRequest(request);
@@ -73,6 +76,7 @@ public class UnitService : IUnitService
         return await GetUnit(unit.UnitId) ?? MapResponse(unit);
     }
 
+    // SO10 // PUT UNIT
     public async Task<bool> PutUnit(UnitDto request)
     {
         var existing = await _db.Units
@@ -88,6 +92,7 @@ public class UnitService : IUnitService
         return affected > 0;
     }
 
+    // SO11 // DELETE UNIT
     public async Task<bool> DeleteUnit(int id)
     {
         var unit = await _db.Units.FindAsync(id);

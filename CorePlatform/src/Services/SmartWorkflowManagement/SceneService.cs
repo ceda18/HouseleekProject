@@ -18,8 +18,9 @@ public class SceneService : ISceneService
         _currentUser = currentUser;
     }
     
-    // ─── PUBLIC METHODS ──────────────────────────────────────────────────────
+    // PUBLIC METHODS
 
+    // SO32 // GET SCENES
     public async Task<List<SceneDto>> GetScenes()
     {
         var query = QueryWithIncludes();
@@ -29,6 +30,7 @@ public class SceneService : ISceneService
         return scenes.Select(a => MapResponse(a)).ToList();
     }
 
+    // SO36 // GET SCENES FILTER
     public async Task<List<SceneDto>> GetScenes(int itemId)
     {
         var query = QueryWithIncludes()
@@ -40,6 +42,7 @@ public class SceneService : ISceneService
         return scenes.Select(a => MapResponse(a)).ToList();
     }
 
+    // SO37 // GET SCENE
     public async Task<SceneDto?> GetScene(int id)
     {
         var query = QueryWithIncludes().Where(a => a.SceneId == id);
@@ -49,6 +52,7 @@ public class SceneService : ISceneService
         return scene == null ? null : MapResponse(scene);
     }
 
+    // SO35 // POST SCENE
     public async Task<SceneDto> PostScene(SceneDto request)
     {
         var smartWorkflow = new SmartWorkflow
@@ -71,6 +75,7 @@ public class SceneService : ISceneService
         return await GetScene(scene.SceneId) ?? MapResponse(scene);
     }
 
+    // SO38 // PUT SCENE
     public async Task<bool> PutScene(SceneDto request)
     {
         var scene = await _db.Scenes
@@ -90,6 +95,7 @@ public class SceneService : ISceneService
         return affected > 0;
     }
 
+    // SO39 // DELETE SCENE
     public async Task<bool> DeleteScene(int id)
     {
         var scene = await _db.Scenes
@@ -105,7 +111,9 @@ public class SceneService : ISceneService
         return affected > 0;
     }
 
-    // ─── PRIVATE HELPERS ────────────────────────────────────────────────────
+    ////////////////////////////////////
+    // PRIVATE HELPERS
+    ////////////////////////////////////
 
     private IQueryable<Scene> QueryWithIncludes()
         => _db.Scenes
@@ -147,7 +155,9 @@ public class SceneService : ISceneService
         return smartActions;
     }
 
-    // ─── MAPPING HELPERS ────────────────────────────────────────────────────
+    ////////////////////////////////////
+    // MAPPING
+    ////////////////////////////////////
 
     internal static SceneDto MapResponse(Scene scene)
     {

@@ -18,6 +18,7 @@ public class ItemService : IItemService
         _currentUser = currentUser;
     }
 
+    // SO20 // GET ITEMS
     public async Task<List<ItemDto>> GetItems()
     {
         var query = _db.Items
@@ -32,6 +33,7 @@ public class ItemService : IItemService
         return items.Select(MapResponse).ToList();
     }
 
+    // SO21 // GET ITEM
     public async Task<ItemDto?> GetItem(int id)
     {
         var query = _db.Items
@@ -46,6 +48,7 @@ public class ItemService : IItemService
         return item == null ? null : MapResponse(item);
     }
 
+    // SO19 // POST ITEM
     public async Task<ItemDto> PostItem(ItemDto request)
     {
         var item = MapRequest(request);
@@ -69,6 +72,7 @@ public class ItemService : IItemService
         return await GetItem(item.ItemId) ?? MapResponse(item);
     }
 
+    // SO23 // DELETE ITEM
     public async Task<bool> DeleteItem(int id)
     {
         var item = await _db.Items.FindAsync(id);

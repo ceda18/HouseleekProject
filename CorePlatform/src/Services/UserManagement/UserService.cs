@@ -22,6 +22,7 @@ public class UserService : IUserService
         return users.Select(u => MapResponse(u)).ToList();
     }
 
+    // SO4 // GET USER
     public async Task<UserDto?> GetUser(int id)
     {
         var user = await _db.Users
@@ -30,6 +31,7 @@ public class UserService : IUserService
         return user == null ? null : MapResponse(user);
     }
 
+    // SO3 // POST USER
     public async Task<UserDto> PostUser(UserDto request)
     {
         var user = MapRequest(request);
@@ -39,6 +41,7 @@ public class UserService : IUserService
         return MapResponse(user);
     }
 
+    // SO5 // PUT USER
     public async Task<bool> PutUser(UserDto request)
     {
         var user = MapRequest(request);

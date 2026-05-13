@@ -16,6 +16,7 @@ public class ItemModelService : IItemModelService
         _db = db;
     }
 
+    // SO18 // GET ITEM MODELS
     public async Task<List<ItemModelDto>> GetItemModels()
     {
         var models = await _db.ItemModels
@@ -28,6 +29,7 @@ public class ItemModelService : IItemModelService
         return models.Select(im => MapResponse(im)).ToList(); // Only return published models
     }
 
+    // SO28 // GET ITEM MODEL
     public async Task<ItemModelDto?> GetItemModel(int id)
     {
         var model = await _db.ItemModels
@@ -39,6 +41,7 @@ public class ItemModelService : IItemModelService
         return model == null ? null : MapResponse(model);
     }
 
+    // SO25 // GET ITEM MODELS FILTER
     public async Task<List<ItemModelDto>> GetItemModels(int? itemCategoryId, int? vendorId)
     {
         var query = _db.ItemModels
@@ -57,6 +60,11 @@ public class ItemModelService : IItemModelService
         var models = await query.ToListAsync();
         return models.Select(im => MapResponse(im)).ToList();
     }
+
+
+    /// ///////////////
+    /// MAPPERS
+    /// ///////////////
 
     internal static ItemModelDto MapResponse(ItemModel im)
     {

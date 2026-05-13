@@ -4,21 +4,21 @@ namespace CorePlatform.src.Services;
 
 public interface IAIAgentService
 {
-    /// SO46 - Builds user snapshot, sends it to the agent service, returns existing history.</summary>
+    // SO46 // START CHAT
     Task<List<AgentMessageDto>> StartChat();
 
-    /// SO47 - Forwards a user message to the agent service and returns the assistant reply.</summary>
+    // SO47 // SEND MESSAGE
     Task<AgentMessageDto?> SendMessage(string message);
 
-    /// SO48 - Applies an agent proposal by delegating to the appropriate service.</summary>
+    // SO48 // APPLY PROPOSAL
     Task<bool> ApplyProposal(ApplyProposalRequest request);
 
-    /// Returns the in-memory chat history for the current user.</summary>
+    // AGENT PUBLIC HELPER //
     Task<List<AgentMessageDto>> GetHistory();
 
-    /// SO49 - Clears in-memory history and notifies the agent service to drop the snapshot.</summary>
+    // SO49 // CLEAR SESSION
     Task<bool> ClearSession();
 
-    /// Executes a read-only SQL query via AgentDbContext. Called by the agent service.</summary>
+    // AGENT PUBLIC HELPER //
     Task<List<Dictionary<string, object?>>> ExecuteAnalyticsQuery(string sql);
 }

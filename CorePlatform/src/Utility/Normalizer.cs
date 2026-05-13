@@ -5,7 +5,7 @@ namespace CorePlatform.src.Utility;
 
 public class Normalizer
 {
-        // ─── JSON KEY NORMALIZATION ──────────────────────────────────────────────
+        // JSON KEY NORMALIZATION 
 
     /// <summary>
     /// Walks the JSON tree and converts every snake_case key to camelCase.

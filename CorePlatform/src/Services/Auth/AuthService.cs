@@ -20,10 +20,12 @@ public class AuthService : IAuthService
         _config = config;
     }
 
-    // ─── PUBLIC METHODS ──────────────────────────────────────────────────────
+    // PUBLIC METHODS 
 
-    /// <summary>
-    /// SO1 — Verifies credentials and returns a JWT token with userId, email, and role.
+    
+    /// SO1 // LOGIN
+    /// /// <summary>
+    /// Verifies credentials and returns a JWT token with userId, email, and role.
     /// Password is compared as SHA-256 hash against the stored hash.
     /// Role is resolved from the AbstractUser subtype (user / admin / vendor).
     /// </summary>
@@ -51,13 +53,14 @@ public class AuthService : IAuthService
         };
     }
 
-    /// <summary>
-    /// SO2 — Logout is client-side: the client discards the JWT token.
+    /// SO2 // LOGOUT
+    /// /// <summary>
+    /// Logout is client-side: the client discards the JWT token.
     /// Always returns true.
     /// </summary>
     public bool Logout() => true;
 
-    // ─── PRIVATE HELPERS ────────────────────────────────────────────────────
+    // PRIVATE HELPERS
 
     /// Generates a JWT token containing userId, email, and role claims.
     private string GenerateToken(AbstractUser user, string role)

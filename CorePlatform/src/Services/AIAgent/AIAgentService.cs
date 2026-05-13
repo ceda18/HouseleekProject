@@ -61,10 +61,12 @@ public class AIAgentService : IAIAgentService
         _itemService = itemService;
     }
 
-    // ─── PUBLIC METHODS ──────────────────────────────────────────────────────
+    // PUBLIC METHODS
 
+    
+    // SO46 // START CHAT
     /// <summary>
-    /// SO46 — Builds a full snapshot of the user's smart home state,
+    /// Builds a full snapshot of the user's smart home state,
     /// sends it to the agent service so Claude has context for the session.
     /// Returns existing in-memory history (if any) so the UI can restore the chat.
     /// </summary>
@@ -79,8 +81,9 @@ public class AIAgentService : IAIAgentService
         return FetchHistory();
     }
 
+    // SO47 // SEND MESSAGE
     /// <summary>
-    /// SO47 — Sends the user's message plus current history to the agent service.
+    /// Sends the user's message plus current history to the agent service.
     /// Stores both the user message and the assistant reply in the in-memory history.
     /// </summary>
     public async Task<AgentMessageDto?> SendMessage(string message)
@@ -131,8 +134,10 @@ public class AIAgentService : IAIAgentService
         return assistantMessage;
     }
 
+    
+    // SO48 // APPLY PROPOSAL
     /// <summary>
-    /// SO48 — Applies an agent-generated proposal by delegating to the appropriate service.
+    /// Applies an agent-generated proposal by delegating to the appropriate service.
     /// The payload must match the target DTO (SceneDto / AutomationDto / ItemDto).
     /// </summary>
     public async Task<bool> ApplyProposal(ApplyProposalRequest request)
@@ -167,6 +172,11 @@ public class AIAgentService : IAIAgentService
     public Task<List<AgentMessageDto>> GetHistory()
         => Task.FromResult(FetchHistory());
 
+    // SO49 // CLEAR SESSION
+    /// <summary>
+    /// Clears current context window inside client session.
+    /// Refreshes the chat releses the conversation history.  
+    /// </summary>
     public async Task<bool> ClearSession()
     {
         _cache.Remove(HistoryCacheKey);
@@ -209,7 +219,9 @@ public class AIAgentService : IAIAgentService
         return results;
     }
 
-    // ─── PRIVATE HELPERS ─────────────────────────────────────────────────────
+    ////////////////////////////////////
+    // PRIVATE HELPERS
+    ////////////////////////////////////
 
     private List<AgentMessageDto> FetchHistory()
         => _cache.Get<List<AgentMessageDto>>(HistoryCacheKey) ?? [];

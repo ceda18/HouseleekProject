@@ -17,8 +17,9 @@ public class AutomationService : IAutomationService
         _currentUser = currentUser;
     }
 
-    // ─── PUBLIC METHODS ──────────────────────────────────────────────────────
+    // PUBLIC METHODS
 
+    // SO34 // GET AUTOMATIONS
     public async Task<List<AutomationDto>> GetAutomations()
     {
         var query = QueryWithIncludes();
@@ -28,6 +29,7 @@ public class AutomationService : IAutomationService
         return automations.Select(MapResponse).ToList();
     }
 
+    // SO41 // GET AUTOMATIONS FILTER
     public async Task<List<AutomationDto>> GetAutomations(int itemId)
     {
         var query = QueryWithIncludes()
@@ -39,6 +41,7 @@ public class AutomationService : IAutomationService
         return automations.Select(MapResponse).ToList();
     }
 
+    // SO42 // GET AUTOMATION
     public async Task<AutomationDto?> GetAutomation(int id)
     {
         var query = QueryWithIncludes().Where(a => a.AutomationId == id);
@@ -48,6 +51,7 @@ public class AutomationService : IAutomationService
         return automation == null ? null : MapResponse(automation);
     }
 
+    // SO40 // POST AUTOMATION
     public async Task<AutomationDto> PostAutomation(AutomationDto request)
     {
         var smartWorkflow = new SmartWorkflow
@@ -74,6 +78,7 @@ public class AutomationService : IAutomationService
         return await GetAutomation(automation.AutomationId) ?? MapResponse(automation);
     }
 
+    // SO43 // PUT AUTOMATION
     public async Task<bool> PutAutomation(AutomationDto request)
     {
         var automation = await _db.Automations
@@ -100,6 +105,7 @@ public class AutomationService : IAutomationService
         return affected > 0;
     }
 
+    // SO44 // DELETE AUTOMATION
     public async Task<bool> DeleteAutomation(int id)
     {
         var automation = await _db.Automations
@@ -119,7 +125,9 @@ public class AutomationService : IAutomationService
         return affected > 0;
     }
 
-    // ─── PRIVATE HELPERS ────────────────────────────────────────────────────
+    ////////////////////////////////////
+    // PRIVATE HELPERS
+    ////////////////////////////////////
 
     private IQueryable<Automation> QueryWithIncludes()
         => _db.Automations
@@ -218,7 +226,9 @@ public class AutomationService : IAutomationService
         return triggers;
     }
 
-    // ─── MAPPING HELPERS ────────────────────────────────────────────────────
+    ////////////////////////////////////
+    // MAPPING HELPERS
+    ////////////////////////////////////
 
     internal static AutomationDto MapResponse(Automation automation)
     {

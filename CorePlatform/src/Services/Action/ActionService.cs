@@ -18,10 +18,12 @@ public class ActionService : IActionService
         _currentUser = currentUser;
     }
 
-    // ─── PUBLIC METHODS ──────────────────────────────────────────────────────
+    // PUBLIC METHODS 
 
+    
+    /// SO22 // PUT ITEM
     /// <summary>
-    /// SO22 — Updates item name, room, and state values.
+    /// Updates item name, room, and state values.
     /// Only changed states are validated, updated, and logged.
     /// triggerType = "manual"
     /// </summary>
@@ -74,8 +76,10 @@ public class ActionService : IActionService
         return true;
     }
 
+    
+    /// SO33 // EXECUTE
     /// <summary>
-    /// SO33 — Executes all SmartActions of a given SmartWorkflow (Scene or Automation).
+    /// Executes all SmartActions of a given SmartWorkflow (Scene or Automation).
     /// Every action is logged regardless of whether the value changes.
     /// If a SmartAction points to a TargetScene, that scene's actions are executed
     /// under the same ExecutionId and parent workflow context.
@@ -123,8 +127,10 @@ public class ActionService : IActionService
         return true;
     }
 
+    
+    /// SO45 // GET ACTION LOGS
     /// <summary>
-    /// SO45 — Returns all action logs ordered by most recent first.
+    /// Returns all action logs ordered by most recent first.
     /// PastValue and CurrentValue are typed according to the valueType
     /// stored in each log's TriggerSource snapshot.
     /// </summary>
@@ -143,7 +149,10 @@ public class ActionService : IActionService
         return logs.Select(MapResponse).ToList();
     }
 
-    // ─── PRIVATE HELPERS ────────────────────────────────────────────────────
+
+    /////////////////////////////////
+    //  PRIVATE HELPERS 
+    /////////////////////////////////
 
     /// <summary>
     /// Recursively executes a collection of SmartActions.
@@ -217,7 +226,9 @@ public class ActionService : IActionService
         }
     }
 
-    // ─── TRIGGER SOURCE BUILDERS ─────────────────────────────────────────────
+    /////////////////////////////////
+    //  TRIGGER SOURCE BUILDERS 
+    /////////////////////////////////
 
     private static object BuildTriggerSource(
         string triggerType,
@@ -253,7 +264,9 @@ public class ActionService : IActionService
     private static object BuildWorkflowContext(SmartWorkflow wf)
         => new { smartWorkflowId = wf.SmartWorkflowId, name = wf.Name, type = wf.Type };
 
-    // ─── MAPPING ─────────────────────────────────────────────────────────────
+    /////////////////////////////////
+    // MAPPING 
+    /////////////////////////////////
 
     private static ActionLogDto MapResponse(ActionLog log)
     {

@@ -17,6 +17,7 @@ public class RoomService : IRoomService
         _currentUser = currentUser;
     }
 
+    // SO14 // GET ROOMS
     public async Task<List<RoomDto>> GetRooms()
     {
         var query = _db.Rooms
@@ -34,6 +35,7 @@ public class RoomService : IRoomService
         return rooms.Select(r => MapResponse(r)).ToList();
     }
 
+    // SO15 // GET ROOM
     public async Task<RoomDto?> GetRoom(int id)
     {
         var query = _db.Rooms
@@ -51,6 +53,7 @@ public class RoomService : IRoomService
         return room == null ? null : MapResponse(room);
     }
 
+    // SO13 // POST ROOM
     public async Task<RoomDto> PostRoom(RoomDto request)
     {
         Room room = MapRequest(request);
@@ -59,6 +62,7 @@ public class RoomService : IRoomService
         return await GetRoom(room.RoomId) ?? MapResponse(room);
     }
 
+    // SO16 // PUT ROOM
     public async Task<bool> PutRoom(RoomDto request)
     {
         var existing = await _db.Rooms
@@ -74,6 +78,7 @@ public class RoomService : IRoomService
         return affected > 0;
     }
 
+    // SO17 // DELETE ROOM
     public async Task<bool> DeleteRoom(int id)
     {
         var room = await _db.Rooms

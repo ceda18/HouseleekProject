@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace CorePlatform.src.DTOs;
 
-// ─── OUTBOUND (UI → CorePlatform) ────────────────────────────────────────────
+// REQUESTS (UI to CorePlatform) 
 
 public class ChatMessageRequest
 {
@@ -21,7 +21,7 @@ public class AnalyticsRequest
     public string Sql { get; set; } = string.Empty;
 }
 
-// ─── CHAT HISTORY ─────────────────────────────────────────────────────────────
+// CHAT HISTORY 
 
 public class AgentMessageDto
 {
@@ -37,7 +37,7 @@ public class ProposalDto
     public JsonElement Payload { get; set; }
 }
 
-// ─── INTERNAL — deserializing AIAgent service responses ───────────────────────
+// INTERNAL — deserializing AIAgent service responses 
 
 internal class AgentServiceResponse
 {

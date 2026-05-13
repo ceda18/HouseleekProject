@@ -14,12 +14,14 @@ public class VendorService : IVendorService
         _db = db;
     }
 
+    // SO24 // GET VENDORS
     public async Task<List<VendorDto>> GetVendors()
     {
         var vendors = await _db.Vendors.ToListAsync();
         return vendors.Select(v => MapResponse(v)).ToList();
     }
 
+    // SO25 // GET VENDOR
     public async Task<VendorDto?> GetVendor(int id)
     {
         var vendor = await _db.Vendors.FindAsync(id);
