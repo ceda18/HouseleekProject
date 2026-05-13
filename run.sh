@@ -18,7 +18,7 @@ if [ ! -d "$SCRIPT_DIR/WebApp/node_modules" ]; then
 fi
 
 echo ""
-echo "  Houseleek — Starting services..."
+echo "  ⏳ Houseleek — Starting services..."
 echo ""
 
 # ── Open three Terminal windows ───────────────────────────────────────────────
@@ -54,11 +54,13 @@ osascript -e "
     set the custom title of front window to \"Houseleek — WebApp\"
   end tell"
 
-echo "  ✓  Three terminals opened:"
+echo "  ✅  Three terminals opened:"
 echo ""
-echo "     CorePlatform  →  http://localhost:5071"
-echo "     AIAgent       →  http://localhost:8000"
-echo "     WebApp        →  http://localhost:3000"
+echo "     👉 CorePlatform  →  http://localhost:5071"
+echo "     👉 AIAgent       →  http://localhost:8000"
+echo "     👉 WebApp        →  http://localhost:3000"
 echo ""
 echo "  API docs: http://localhost:5071/scalar/v1"
+echo ""
+echo "  🏠 The Houseleek Smart Home is now live! 🤙"
 echo ""
