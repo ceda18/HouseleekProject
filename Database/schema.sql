@@ -2,6 +2,13 @@
 -- Houseleek Schema
 -- ============================================================
 
+-- ============================================================
+-- ROLES (idempotent)
+-- ============================================================
+
+CREATE ROLE IF NOT EXISTS thesis_core_platform WITH LOGIN PASSWORD 'password';
+CREATE ROLE IF NOT EXISTS thesis_agent WITH LOGIN PASSWORD 'password';
+
 DROP SCHEMA IF EXISTS houseleek CASCADE;
 CREATE SCHEMA houseleek;
 
@@ -309,13 +316,17 @@ CREATE TABLE action_log (
 );
 
 -- ============================================================
--- AGENT ROLE GRANTS
+-- ROLE GRANTS
 -- ============================================================
 
--- davanju agenta read-only pristup
+-- thesis_core_platform: full access
+GRANT USAGE ON SCHEMA houseleek TO thesis_core_platform;
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA houseleek TO thesis_core_platform;
+GRANT USAGE ON ALL SEQUENCES IN SCHEMA houseleek TO thesis_core_platform;
+
+-- thesis_agent: read-only, no user tables
 GRANT USAGE ON SCHEMA houseleek TO thesis_agent;
 GRANT SELECT ON ALL TABLES IN SCHEMA houseleek TO thesis_agent;
--- suspenzija agenta sa tabela sa privatnim informacijama
-REVOKE SELECT ON houseleek.abstract_user FROM thesis_agent;
-REVOKE SELECT ON houseleek.admin FROM thesis_agent;
-REVOKE SELECT ON houseleek."user" FROM thesis_agent;
+REVOKE ALL ON houseleek.abstract_user FROM thesis_agent;
+REVOKE ALL ON houseleek.admin FROM thesis_agent;
+REVOKE ALL ON houseleek."user" FROM thesis_agent;
