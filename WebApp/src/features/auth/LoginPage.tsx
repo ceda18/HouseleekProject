@@ -68,18 +68,18 @@ export function LoginPage() {
       <div className="app-bg" />
       <div className="min-h-screen flex items-center justify-center p-4">
         <div className="glass-strong glass-shimmer rounded-3xl p-8 w-full max-w-sm">
-          <div className="flex flex-col items-center mb-8">
-            
+         <div className="flex flex-col items-center mb-8">
+           
             <img src={logoV} alt="Houseleek" className="h-24 w-auto mb-3" />
             <p className="text-sm text-text-muted">
               {mode === 'login' ? 'Sign in to your smart home' : 'Create your account'}
             </p>
-            <p className="text-sm text-text-muted">
+            <p className="text-xs text-text-muted mt-2 px-3 py-1 bg-gray-100 rounded-full text-center">
               {mode === 'login' ? (
               <>Demo account: <strong>pera.peric@gmail.com / lozinka123</strong> — feel free to explore</>
               ) : 'Use login to use demo account.'}
             </p>
-            
+           
           </div>
 
           {/* Toggle */}
