@@ -76,7 +76,7 @@ export function LoginPage() {
             </p>
             <p className="text-xs text-text-muted mt-2 px-3 py-1 bg-gray-100 rounded-full text-center">
               {mode === 'login' ? (
-              <>Demo account: <strong>pera.peric@gmail.com / lozinka123</strong> — feel free to explore</>
+              <>Demo account - feel free to explore: <br /><strong>pera.peric@gmail.com <br />lozinka123</strong></>
               ) : 'Use login to use demo account.'}
             </p>
            
