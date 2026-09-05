@@ -74,7 +74,7 @@ export function LoginPage() {
             <p className="text-sm text-text-muted">
               {mode === 'login' ? 'Sign in to your smart home' : 'Create your account'}
             </p>
-            <p className="text-xs text-text-muted mt-2 px-3 py-1 bg-gray-100 rounded-full text-center">
+            <p className="text-xs text-text-muted mt-2 px-3 py-2 bg-gray-100 rounded-lg text-center">
               {mode === 'login' ? (
               <>Demo account - feel free to explore: <br /><strong>pera.peric@gmail.com <br />lozinka123</strong></>
               ) : 'Use login to use demo account.'}
