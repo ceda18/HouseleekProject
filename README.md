@@ -33,43 +33,8 @@ The hard part is what happens when that agent is wrong. A chatbot that hallucina
 
 **Why it's interesting.** The agent has no database credentials. None. When it wants to run analytics, it asks the backend, which runs the query under a read-only role that has been explicitly revoked from the tables holding personal data. Prompt injection has nowhere to land: there is no write path to reach, from any direction. That is one of three independent layers, and the whole point of the project is that those layers - not the model's good behaviour - are what make it safe.
 
-```
-👤 User:       Hey, what type of device do I use the least?
 
-🏠 Houseleek:  Based on your activity history, here's a breakdown by device category:
-
-                 CATEGORY                ACTIONS
-                 🌡️  Climate Control          15
-                 🔒 Security                 215
-                 🏠 Appliances               233
-                 💡 Lighting                 256
-
-               Your Climate Control devices are by far the least used - with only 15
-               actions recorded, compared to hundreds for other categories. That makes
-               sense since your climate sensor (Radovan) is read-only and doesn't get
-               controlled directly.
-
-👤 User:       I'm having some friends over for a watch party tonight. Set the mood for
-               a classic horror movie.
-
-🏠 Houseleek:  The "Horor večer" scene is ready for your review! Once you confirm it,
-               everything will be set with a single tap. Enjoy the movie - if you dare! 🎃
-
-               ┌─ 🎬 Scene proposal ──────────────────────────────────┐
-               │  Horor večer                            15 actions   │
-               │                                                      │
-               │  🎬 Ivan · input_source              =  hdmi1        │
-               │  🎬 Stefan · volume                  =  40           │
-               │  🎬 Stefan · mode                    =  surround     │
-               │  💡 Nataša · brightness              =  10           │
-               │  💡 Nataša · color                   =  red          │
-               │  💡 Ljubinka · brightness            =  5            │
-               │  🔒 Obradović · active               =  true         │
-               │  … 8 more                                            │
-               │                                                      │
-               │             [ ✓ Apply ]        [ ✕ Dismiss ]         │
-               └──────────────────────────────────────────────────────┘
-```
+![Demo](assets/demo.gif)         
 
 Nobody told it that horror means dim red light, surround sound, and the front door locked. It read the room - literally, the rooms and the devices in them - and worked out the rest. Then it stopped and waited, because applying it is not its decision to make.
 FYI: Devices are named, IKEA-style, after people - "Ivan" is a TV, "Obradović" is the front lock. It reads oddly for exactly one message, then you stop noticing.
@@ -80,8 +45,6 @@ FYI: Devices are named, IKEA-style, after people - "Ivan" is a TV, "Obradović" 
 ---
 
 ## Demo
-
-![Demo](assets/demo.gif)
 
 ![Dashboard](assets/dashboard.png)
 
