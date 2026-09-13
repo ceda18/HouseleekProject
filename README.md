@@ -34,10 +34,10 @@ The hard part is what happens when that agent is wrong. A chatbot that hallucina
 **Why it's interesting.** The agent has no database credentials. None. When it wants to run analytics, it asks the backend, which runs the query under a read-only role that has been explicitly revoked from the tables holding personal data. Prompt injection has nowhere to land: there is no write path to reach, from any direction. That is one of three independent layers, and the whole point of the project is that those layers - not the model's good behaviour - are what make it safe.
 
 
-![Demo](assets/demo.gif)         
+![AI Use Case](assets/use-case.png)         
 
-Nobody told it that horror means dim red light, surround sound, and the front door locked. It read the room - literally, the rooms and the devices in them - and worked out the rest. Then it stopped and waited, because applying it is not its decision to make.
-FYI: Devices are named, IKEA-style, after people - "Ivan" is a TV, "Obradović" is the front lock. It reads oddly for exactly one message, then you stop noticing.
+Nobody told it that Harry Potter and magic means dim purple light, no hallway lightning, and surround sound. It read the room - literally, the rooms and the devices in them - and worked out the rest. Then it stopped and waited, because applying it is not its decision to make.
+FYI: Devices are named, IKEA-style, after people - "Ivan" is a TV, "Nataša" is the lightbulb. It reads oddly for exactly one message, then you stop noticing.
 
 > [!NOTE]
 > **What's an "agent", in one sentence?** A normal chatbot can only produce text. An agent is given a small set of tools it may call - here: run a read-only query, fetch the device catalogue, draft a proposal - and it decides on its own which ones to use and in what order to answer you. Everything it is allowed to touch is everything in that list, and nothing else.
@@ -45,6 +45,8 @@ FYI: Devices are named, IKEA-style, after people - "Ivan" is a TV, "Obradović" 
 ---
 
 ## Demo
+
+![Demo](assets/demo.gif)
 
 ![Dashboard](assets/dashboard.png)
 
