@@ -6,7 +6,7 @@
 
 **A smart home platform with an AI agent that can read everything, propose anything, and change nothing on its own.**
 
-<p align="center">
+
     ![Python](https://img.shields.io/badge/Python-3.11-3776AB?logo=python&logoColor=white)
     ![FastAPI](https://img.shields.io/badge/FastAPI-009688?logo=fastapi&logoColor=white)
     ![.NET](https://img.shields.io/badge/.NET-10-512BD4?logo=dotnet&logoColor=white)
@@ -15,7 +15,7 @@
     ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?logo=postgresql&logoColor=white)
     ![Claude](https://img.shields.io/badge/Claude-D97757?logo=anthropic&logoColor=white)
     ![Railway](https://img.shields.io/badge/Railway-0B0D0E?logo=railway&logoColor=white)
-</p>
+
 
 > [!IMPORTANT]
 > **Try it live:** [houseleek.up.railway.app](https://houseleek.up.railway.app)
