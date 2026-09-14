@@ -6,18 +6,25 @@
 
 **A smart home platform with an AI agent that can read everything, propose anything, and change nothing on its own.**
 
-![Python](https://img.shields.io/badge/Python-3.11-3776AB?logo=python&logoColor=white)
-![FastAPI](https://img.shields.io/badge/FastAPI-009688?logo=fastapi&logoColor=white)
-![.NET](https://img.shields.io/badge/.NET-10-512BD4?logo=dotnet&logoColor=white)
-![React](https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=black)
-![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?logo=postgresql&logoColor=white)
-![Claude](https://img.shields.io/badge/Claude-D97757?logo=anthropic&logoColor=white)
-![Railway](https://img.shields.io/badge/Railway-0B0D0E?logo=railway&logoColor=white)
+<p align="center">
+    ![Python](https://img.shields.io/badge/Python-3.11-3776AB?logo=python&logoColor=white)
+    ![FastAPI](https://img.shields.io/badge/FastAPI-009688?logo=fastapi&logoColor=white)
+    ![.NET](https://img.shields.io/badge/.NET-10-512BD4?logo=dotnet&logoColor=white)
+    ![React](https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=black)
+    ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)
+    ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?logo=postgresql&logoColor=white)
+    ![Claude](https://img.shields.io/badge/Claude-D97757?logo=anthropic&logoColor=white)
+    ![Railway](https://img.shields.io/badge/Railway-0B0D0E?logo=railway&logoColor=white)
+</p>
 
 > [!IMPORTANT]
 > **Try it live:** [houseleek.up.railway.app](https://houseleek.up.railway.app)
 > Sign in with `pera.peric@gmail.com` / `lozinka123`. The environment is seeded with a full apartment and 90 days of device history, so the agent has something real to talk about. The server may be asleep - if it is, running it locally takes one script.
+
+---
+
+
+![Demo](assets/demo.gif)
 
 ---
 
@@ -47,8 +54,6 @@ FYI: Devices are named, IKEA-style, after people - "Ivan" is a TV, "Nataša" is 
 ---
 
 ## Demo
-
-![Demo](assets/demo.gif)
 
 ![Dashboard](assets/dashboard.png)
 
