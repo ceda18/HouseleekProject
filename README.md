@@ -39,7 +39,7 @@ The hard part is what happens when that agent is wrong. A chatbot that hallucina
 
 **Why it's interesting.** The agent has no database credentials. None. When it wants to run analytics, it asks the backend, which runs the query under a read-only role that has been explicitly revoked from the tables holding personal data. Prompt injection has nowhere to land: there is no write path to reach, from any direction. That is one of three independent layers, and the whole point of the project is that those layers - not the model's good behaviour - are what make it safe.
 
-**Trivia:** Houseleek (Serbian: čuvarkuća), as a plant, symbolizes a personal guard for one's home in Balkan folklore. Too have a houseleek guard your home is considered as a sign of family-security and good fortune. 🪴✨
+**Trivia:** Houseleek (Serbian: čuvarkuća), as a plant, symbolizes a personal guard for one's home in Balkan folklore. To have a houseleek guard your home is considered as a sign of family-security and good fortune. 🪴✨
 
 
 ![AI Use Case](assets/use-case.png)         
