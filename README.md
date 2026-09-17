@@ -200,7 +200,7 @@ Twenty tables in the `houseleek` schema, in five groups:
 `action_definition` is the keystone. It is why "set the thermostat to 60" fails identically whether it came from a button, an automation, or the agent - the constraint lives with the device model, not in any one caller.
 
 > [!TIP]
-> The full class diagram and object model are in the [thesis](./Final%20Thesis%20-%20%C4%8Ceda%20Veli%C4%8Dkovi%C4%87.pdf), chapter 4. They are dense enough that reproducing them here would help nobody.
+> The full class diagram and object model are in the [thesis](https://drive.google.com/file/d/1uDqokD_B-yVEmOXyBw8Wnp7C_RW87mGu/), chapter 4. They are dense enough that reproducing them here would help nobody.
 
 ---
 
@@ -354,7 +354,7 @@ The seed account comes with a furnished home and three months of simulated activ
 
 ## About the thesis
 
-This project is the practical half of a graduate thesis at the Faculty of Organisational Sciences, University of Belgrade, on integrating AI agents into software with real-world consequences. The full document - requirements analysis, system design, implementation walkthrough, evaluation and discussion - is in this repository: [**Final Thesis**](./Final%20Thesis%20-%20%C4%8Ceda%20Veli%C4%8Dkovi%C4%87.pdf). It is written in Serbian.
+This project is the practical half of a graduate thesis at the Faculty of Organisational Sciences, University of Belgrade, on integrating AI agents into software with real-world consequences. The full document - requirements analysis, system design, implementation walkthrough, evaluation and discussion - is in this repository: [**Final Thesis**](https://drive.google.com/file/d/1uDqokD_B-yVEmOXyBw8Wnp7C_RW87mGu/). It is written in Serbian.
 
 Its conclusion, in one line: an agent can absolutely be trusted inside a system like this, but not because it is an agent - only because of what was built around it.
 
