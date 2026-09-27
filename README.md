@@ -24,7 +24,7 @@
 
 <img src="assets/houseleek-showreel.gif" alt="Showreel" width="100%">
 
-*Motion graphics developed via Antropic Opus 5.5 Max.*
+*Motion graphics developed with Opus 5.5 Max.*
 
 ---
 
