@@ -24,7 +24,8 @@
 
 
 ![Showreel](assets/houseleek-showreel.gif)
-*Motion graphics developed with model Opus 5.5, effort: Max.
+
+*Motion graphics via Antropic Opus 5.5, effort: Max.*
 
 ---
 
