@@ -23,7 +23,8 @@
 ---
 
 
-![Demo](assets/demo.gif)
+![Showreel](assets/houseleek-showreel.gif)
+*Motion graphics developed with model Opus 5.5, effort: Max.
 
 ---
 
@@ -53,6 +54,8 @@ FYI: Devices are named, IKEA-style, after people - "Ivan" is a TV, "Nataša" is 
 ---
 
 ## Demo
+
+![Demo](assets/demo.gif)
 
 ![Dashboard](assets/dashboard.png)
 
