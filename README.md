@@ -22,10 +22,11 @@
 
 ---
 
-
 ![Showreel](assets/houseleek-showreel.gif)
 
-*Motion graphics via Antropic Opus 5.5, effort: Max.*
+---
+
+*Motion graphics developed via Antropic Opus 5.5, effort: Max.*
 
 ---
 
