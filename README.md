@@ -22,10 +22,7 @@
 
 ---
 
-![Showreel](assets/houseleek-showreel.gif)
-
----
-
+<img src="assets/houseleek-showreel.gif" alt="Showreel" width="100%">
 *Motion graphics developed via Antropic Opus 5.5, effort: Max.*
 
 ---
